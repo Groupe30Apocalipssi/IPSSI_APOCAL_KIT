@@ -94,11 +94,40 @@ Ouvrez ensuite :
 | **Admin** | `/admin` | (staff) config LLM/app, utilisateurs, données — voir `docs/09-admin.md` |
 | Légal | `/legal/...` | Mentions, confidentialité, CGU, cookies (à compléter) |
 
-👑 **Devenir admin** : créez un super-utilisateur, un lien « Admin » apparaît alors
-dans l'en-tête :
+### 👑 Créer le compte administrateur
+
+**Le kit ne crée AUCUN admin automatiquement** — c'est à vous de le faire. La commande
+`make seed` crée seulement un compte **normal** de démo (`test` / `motdepasse123`) qui
+n'a **pas** les droits admin.
+
+Pour créer votre **premier** administrateur :
+
 ```bash
 docker exec -it apocalipssi-2026-backend python manage.py createsuperuser
 ```
+
+La commande demande successivement un **nom d'utilisateur**, un **email** et un
+**mot de passe**. ⚠️ Renseignez bien l'**email** : dans l'application, **on se connecte
+par email** (le nom d'utilisateur ne sert qu'au Django admin).
+
+Ce compte devient `is_staff` + `is_superuser`. Après connexion, un lien **« Admin »**
+(ambre) apparaît dans l'en-tête et donne accès à :
+- la page **`/admin`** de l'app (configurer le LLM et l'app, gérer les utilisateurs, seed/reset) ;
+- le **Django admin** natif sur `http://localhost:8000/admin/`.
+
+> 👥 **Pour les coéquipiers suivants**, pas besoin de `createsuperuser` : depuis
+> l'onglet *Utilisateurs* de `/admin`, le premier admin peut promouvoir les autres
+> avec le bouton **« Rendre admin »**.
+>
+> 🔁 Le lien « Admin » n'apparaît pas tout de suite ? **Rechargez la page** (le front
+> recharge votre profil) ou déconnectez/reconnectez-vous.
+>
+> 🤖 **Variante non interactive** (utile en script/CI) :
+> ```bash
+> docker exec -e DJANGO_SUPERUSER_PASSWORD=motdepasse123 apocalipssi-2026-backend \
+>   python manage.py createsuperuser --noinput --username admin --email admin@exemple.fr
+> ```
+
 🌙 **Mode sombre** : bouton lune/soleil en haut à droite (mémorisé).
 ✉️ **Validation d'email** : à l'inscription, un email part. En dev (sans Brevo),
 il s'affiche dans les **logs du backend** :

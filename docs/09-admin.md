@@ -14,19 +14,27 @@ Le kit fournit **deux** interfaces d'administration complémentaires :
 
 ## 🔑 Devenir administrateur
 
+> ⚠️ **Aucun admin n'est créé automatiquement.** `make seed` ne crée qu'un compte
+> **normal** de démo (`test` / `motdepasse123`), sans droits admin. Vous devez créer
+> le premier admin vous-même.
+
 L'accès à `/admin` (React) et à `/admin/` (Django) exige un compte **staff**
 (`is_staff = True`). Le plus simple : créer un **super-utilisateur**.
 
 ```bash
 docker exec -it apocalipssi-2026-backend python manage.py createsuperuser
-# email + mot de passe (l'email sert d'identifiant)
 ```
 
-Un super-utilisateur est `is_staff` ET `is_superuser`. Une fois connecté dans
-l'app, un lien **« Admin »** (ambre) apparaît dans l'en-tête.
+La commande demande un **nom d'utilisateur**, un **email** et un **mot de passe**.
+⚠️ Renseignez bien l'**email** : l'application se connecte **par email** (le nom
+d'utilisateur ne sert qu'au Django admin natif).
 
-> Vous pouvez ensuite **promouvoir** d'autres comptes en admin depuis l'onglet
-> *Utilisateurs* (bouton « Rendre admin »).
+Un super-utilisateur est `is_staff` ET `is_superuser`. Une fois connecté dans
+l'app, un lien **« Admin »** (ambre) apparaît dans l'en-tête (rechargez la page si
+besoin).
+
+> 👥 Vous pouvez ensuite **promouvoir** d'autres comptes en admin depuis l'onglet
+> *Utilisateurs* (bouton « Rendre admin ») — sans repasser par `createsuperuser`.
 
 ---
 
