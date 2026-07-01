@@ -126,3 +126,12 @@ export async function deleteAccount(password: string): Promise<void> {
   await api.delete('/accounts/profile/', { data: { password } });
   clearToken();
 }
+
+/** Exporte les données personnelles au format ZIP. */
+export async function exportUserData(): Promise<Blob> {
+  const { data } = await api.get('/accounts/me/export/', {
+    responseType: 'blob',
+  });
+  return data;
+}
+
