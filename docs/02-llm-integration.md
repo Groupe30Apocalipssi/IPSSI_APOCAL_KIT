@@ -94,11 +94,11 @@ LLM_BACKEND=ollama                       # gratuit, local (recommandé en dev)
 Le plus simple — éditer `.env` :
 
 ```bash
-OLLAMA_MODEL=llama3.2:3b      # plus léger (2 Go) si vous avez peu de RAM
+OLLAMA_MODEL=llama3.2:3b      # défaut recommandé J2 : local, ~2 Go, plus rapide
 # ou
-OLLAMA_MODEL=mistral:7b        # alternative
+OLLAMA_MODEL=llama3.1:8b      # meilleure qualité, mais plus lent et plus lourd
 # ou
-OLLAMA_MODEL=phi3:mini         # 2.3 Go, rapide
+OLLAMA_MODEL=phi3:mini        # 2.3 Go, rapide
 ```
 
 Puis :
@@ -106,7 +106,8 @@ Puis :
 ```bash
 docker compose down
 docker compose up -d
-docker exec apocalipssi-2026-ollama ollama pull <nouveau-modèle>
+make pull-model               # lit OLLAMA_MODEL depuis .env
+make benchmark-llm            # valide le seuil de 60 s
 ```
 
 > 📝 **Documenter ce choix par un ADR** (voir [07-bonnes-pratiques.md](./07-bonnes-pratiques.md)). C'est attendu en perturbation J2.

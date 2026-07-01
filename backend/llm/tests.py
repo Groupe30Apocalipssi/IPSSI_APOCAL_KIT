@@ -1,7 +1,10 @@
 """Tests pour l'app llm — K1 (ping) + K2 (generate-quiz)."""
 
+from io import StringIO
+
 import pytest
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from django.test import override_settings
 from rest_framework.test import APIClient
 
@@ -68,3 +71,11 @@ def test_generate_quiz_requires_auth():
         format="multipart",
     )
     assert response.status_code in (401, 403)
+
+
+@override_settings(LLM_BACKEND="mock")
+def test_benchmark_llm_command_passes_with_mock():
+    out = StringIO()
+    call_command("benchmark_llm", threshold=60, stdout=out)
+
+    assert "PASS" in out.getvalue()

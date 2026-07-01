@@ -38,5 +38,5 @@ echo "  Frontend : http://localhost:3000   (ou le port FRONTEND_HOST_PORT de vot
 echo "  API      : http://localhost:8000/api"
 echo "  API docs : http://localhost:8000/api/docs"
 echo ""
-echo "Premier lancement avec Ollama ? Telechargez le modele (une seule fois) :"
-echo "  docker exec apocalipssi-2026-ollama ollama pull llama3.1:8b"
+echo "Premier lancement avec Ollama ? Telechargez le modele configure (une seule fois) :"
+echo "  make pull-model"

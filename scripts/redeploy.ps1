@@ -43,5 +43,5 @@ Write-Host "  Frontend : http://localhost:3000   (ou le port FRONTEND_HOST_PORT 
 Write-Host "  API      : http://localhost:8000/api"
 Write-Host "  API docs : http://localhost:8000/api/docs"
 Write-Host ""
-Write-Host "Premier lancement avec Ollama ? Telechargez le modele (une seule fois) :"
-Write-Host "  docker exec apocalipssi-2026-ollama ollama pull llama3.1:8b"
+Write-Host "Premier lancement avec Ollama ? Telechargez le modele configure (une seule fois) :"
+Write-Host "  make pull-model"
