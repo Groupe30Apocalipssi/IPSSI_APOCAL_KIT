@@ -73,7 +73,7 @@ cp .env.example .env
 docker compose up -d
 
 # 4. Téléchargez le modèle LLM (UNE seule fois, ~5 min)
-make pull-model      # ou : docker exec apocalipssi-2026-ollama ollama pull llama3.1:8b
+make pull-model      # ou : docker exec apocalipssi-2026-ollama ollama pull llama3.2:3b
 
 # 5. (Optionnel) Données de démo
 make seed
