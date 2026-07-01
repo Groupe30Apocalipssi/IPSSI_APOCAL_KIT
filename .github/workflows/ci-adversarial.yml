@@ -1,0 +1,50 @@
+# GitHub Actions — Test adversarial automatisé (Perturbation J3)
+# Ce workflow exécute les tests de sécurité à chaque push/PR sur develop et main.
+# Objectif : détecter toute régression de sécurité LLM dès l'intégration.
+
+name: CI — Tests Adversariaux (Prompt Injection)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  adversarial-security-tests:
+    name: 🛡️ Tests Prompt Injection (OWASP LLM-01)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Installation des dépendances
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-django
+
+      - name: 🛡️ Exécution des tests adversariaux
+        working-directory: backend
+        env:
+          DJANGO_SETTINGS_MODULE: edututor.settings.test
+          SECRET_KEY: ci-test-secret-key-not-for-production
+        run: |
+          pytest llm/tests/adversarial/test_adversarial.py -v \
+            --tb=short \
+            -k "TestT1 or TestT2 or TestT3 or TestT4 or TestT5" \
+            --junit-xml=adversarial-results.xml
+
+      - name: 📊 Publication des résultats
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: adversarial-test-results
+          path: backend/adversarial-results.xml
