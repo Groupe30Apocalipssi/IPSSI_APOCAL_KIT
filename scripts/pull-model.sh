@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ============================================================================
-# pull-model.sh — Télécharge le modèle Llama 3.1 8B dans Ollama
+# pull-model.sh — Télécharge le modèle Ollama configuré
 # ----------------------------------------------------------------------------
 # À exécuter UNE fois après le premier `docker compose up`.
-# Durée : ~5 min (selon connexion), taille : ~4.7 Go.
+# Durée : ~3 à 10 min selon connexion, taille : plusieurs Go.
 # ============================================================================
 
 set -euo pipefail
 
-MODEL="${OLLAMA_MODEL:-llama3.1:8b}"
+MODEL="${OLLAMA_MODEL:-llama3.2:3b}"
 CONTAINER="${OLLAMA_CONTAINER:-apocalipssi-2026-ollama}"
 
 if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
