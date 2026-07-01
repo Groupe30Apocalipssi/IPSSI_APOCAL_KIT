@@ -33,14 +33,14 @@ Le choix du VPS dépend presque entièrement de **comment EduTutor IA génère l
 
 | Critère | LLM cloud (recommandé par défaut) | Ollama local |
 |---|---|---|
-| Variable `.env` | `LLM_BACKEND=groq` (ou `mistral`, `gemini`, `cerebras`) | `LLM_BACKEND=ollama` + `OLLAMA_MODEL=llama3.1:8b` |
-| RAM requise | 2–4 Go suffisent | **8 Go minimum**, 16 Go confortable (modèle ~5–6 Go + Postgres/Django/front) |
-| Disque | 20–40 Go | **+5 à 8 Go rien que pour le modèle** (llama3.1:8b ≈ 4,7 Go) |
-| Vitesse de génération | ~1–5 s (Groq/Cerebras très rapides) | **2 à 5 min par QCM sur CPU sans GPU** (timeout 600 s) |
+| Variable `.env` | `LLM_BACKEND=groq` (ou `mistral`, `gemini`, `cerebras`) | `LLM_BACKEND=ollama` + `OLLAMA_MODEL=llama3.2:3b` |
+| RAM requise | 2–4 Go suffisent | **8 Go minimum**, 16 Go confortable (modèle ~2 Go + Postgres/Django/front) |
+| Disque | 20–40 Go | **+2 à 5 Go rien que pour le modèle** (llama3.2:3b ≈ 2 Go) |
+| Vitesse de génération | ~1–5 s (Groq/Cerebras très rapides) | Variable sur CPU sans GPU ; à valider avec `make benchmark-llm` |
 | RGPD / souveraineté | Données envoyées au fournisseur (Mistral = hébergé UE) | Tout reste sur votre VPS |
 | Coût | Free tier gratuit | Inclus dans le VPS (mais VPS plus gros = plus cher) |
 
-> ⚠️ **Les VPS OVH n'ont pas de GPU.** Faire tourner `llama3.1:8b` en CPU pur est très lent (2 à 5 min par génération) et sature 100 % des cœurs, ce qui bloque les autres services pendant la génération. **Pour une démo fluide en formation, choisissez un backend cloud free tier (Groq ou Mistral) et un petit VPS.** Ne partez sur Ollama local que si la souveraineté/le hors-ligne est une exigence explicite, et dans ce cas dimensionnez large. La stratégie LLM détaillée fait l'objet de la **section 8**.
+> ⚠️ **Les VPS OVH n'ont pas de GPU.** Même avec `llama3.2:3b`, l'inférence Ollama en CPU pur peut saturer les cœurs et ralentir les autres services. **Pour une démo fluide en formation, choisissez un backend cloud free tier (Groq ou Mistral) et un petit VPS.** Ne partez sur Ollama local que si la souveraineté/le hors-ligne est une exigence explicite, et validez la latence avec `make benchmark-llm`. La stratégie LLM détaillée fait l'objet de la **section 8**.
 
 ### 1.2. Choisir la gamme VPS OVHcloud
 
@@ -281,7 +281,7 @@ Les lignes `Time zone: Europe/Paris` et `System clock synchronized: yes` doivent
 
 Les petits VPS OVH disposent souvent de **2 à 4 Go de RAM**. Un build Docker (frontend Vite, image backend) ou un pic mémoire peut déclencher l'**OOM-killer**. Un fichier swap sert de filet de sécurité.
 
-> ⚠️ **Le swap ne remplace PAS la RAM** et reste lent. Pour faire tourner **Ollama en local** (`llama3.1:8b` exige 5–6 Go rien que pour le modèle), il faut de la RAM réelle, pas du swap (voir section 8). Sur un VPS sans GPU et peu doté, privilégiez un backend LLM cloud. Le swap reste utile pour absorber les builds et les pics ponctuels. Il **ne dispense pas** de plafonner la RAM des conteneurs (section 6.7), qui borne réellement la consommation pour protéger Postgres.
+> ⚠️ **Le swap ne remplace PAS la RAM** et reste lent. Pour faire tourner **Ollama en local**, il faut de la RAM réelle, pas du swap (voir section 8) : `llama3.2:3b` charge environ 2 Go et `llama3.1:8b` monte plutôt vers 5–6 Go. Sur un VPS sans GPU et peu doté, privilégiez un backend LLM cloud. Le swap reste utile pour absorber les builds et les pics ponctuels. Il **ne dispense pas** de plafonner la RAM des conteneurs (section 6.7), qui borne réellement la consommation pour protéger Postgres.
 
 Vérifiez d'abord la RAM et un éventuel swap existant :
 
@@ -1359,17 +1359,17 @@ sudo certbot renew --dry-run        # vérifie le renouvellement automatique (ti
 
 ## 8. Stratégie LLM sur le VPS (cloud vs Ollama local)
 
-Le Kit génère des QCM en appelant un moteur LLM. En développement, le moteur par défaut est **Ollama local** avec `llama3.1:8b`. Cette section explique pourquoi ce choix est **inadapté à un VPS OVH standard sans GPU** et comment basculer par défaut vers un **backend cloud à free tier** (Groq, Gemini, Mistral, Cerebras), qui rend l'application réellement utilisable en production.
+Le Kit génère des QCM en appelant un moteur LLM. En développement, le moteur par défaut est **Ollama local** avec `llama3.2:3b`. Cette section explique pourquoi Ollama local reste **à valider soigneusement sur un VPS OVH standard sans GPU** et comment basculer par défaut vers un **backend cloud à free tier** (Groq, Gemini, Mistral, Cerebras), qui rend l'application réellement utilisable en production.
 
 ### 8.1. Pourquoi Ollama local est rarement praticable sur un VPS OVH
 
-Sur un VPS d'entrée/milieu de gamme (CPU uniquement, **pas de GPU**), faire tourner `llama3.1:8b` pose trois problèmes concrets :
+Sur un VPS d'entrée/milieu de gamme (CPU uniquement, **pas de GPU**), faire tourner Ollama local pose trois problèmes concrets :
 
 | Contrainte | Réalité mesurée | Conséquence en production |
 |---|---|---|
-| **Disque** | Le modèle quantifié Q4 pèse **~4,7 Go** à télécharger | Occupe une grande part d'un petit disque VPS |
-| **RAM** | Le modèle seul réclame **~5-6 Go** une fois chargé | Sur un VPS 2-4 Go RAM : tué par l'OOM-killer ou swap massif. Il faut **≥ 8 Go dédiables** (idéalement 16 Go avec Postgres + Django + frontend) |
-| **CPU / latence** | **2 à 5 min par génération** de QCM en CPU pur ; d'où le réglage `OLLAMA_TIMEOUT=600` (10 min) | CPU à 100 % sur tous les cœurs pendant la génération → sature le VPS. Risque de **502/504** si le proxy ou gunicorn coupe avant la fin |
+| **Disque** | `llama3.2:3b` pèse environ **2 Go** à télécharger | À anticiper sur les petits disques VPS |
+| **RAM** | Le modèle seul réclame environ **2 Go** une fois chargé | Sur un VPS 2-4 Go RAM : risque d'OOM ou de swap avec Postgres/Django/frontend. Prévoir **≥ 8 Go** pour Ollama local |
+| **CPU / latence** | Latence très dépendante du CPU ; objectif à vérifier avec `make benchmark-llm` | CPU à 100 % pendant la génération → sature le VPS. Risque de **502/504** si le proxy ou gunicorn coupe avant la fin |
 
 > ⚠️ Le port Ollama `11434` est exposé en dur sur l'hôte dans le `docker-compose.yml` de dev. L'API Ollama **n'a aucune authentification** : exposée sur Internet, n'importe qui peut l'utiliser et saturer votre CPU. En production, ce port ne doit JAMAIS être public — l'override de la section 6.5 le ferme (`ports: !reset []` + profil `ollama` non démarré).
 
@@ -1387,7 +1387,7 @@ Le Kit câble déjà 9 backends via la variable `LLM_BACKEND`. Voici lesquels re
 | Vitesse maximale (alt.) | Cerebras | `cerebras` | `llama-3.3-70b` | Wafer-scale, très rapide |
 | **Conformité RGPD / souveraineté** | **Mistral** | `mistral` | `mistral-small-latest` | Fournisseur **européen**, données hébergées en UE |
 | Repli gratuit sans CB | Gemini | `gemini` | `gemini-1.5-flash` | Google AI Studio, free tier sans carte bancaire |
-| Souveraineté totale / hors-ligne | Ollama local | `ollama` | `llama3.1:8b` | **Uniquement** si VPS ≥ 8 Go RAM dédiables (étape 8.6) |
+| Souveraineté totale / hors-ligne | Ollama local | `ollama` | `llama3.2:3b` | **Uniquement** si VPS ≥ 8 Go RAM dédiables et benchmark validé (étape 8.6) |
 | CI / tests | mock | `mock` | — | Faux QCM déterministe instantané, jamais en prod publique |
 
 > ⚠️ **Enjeu RGPD** : tout backend cloud envoie le contenu des cours hors de votre serveur. Le code journalise un avertissement à chaque appel cloud mais **ne bloque pas**. Si la confidentialité est critique, privilégiez **Mistral** (UE) ou Ollama local, et documentez le choix par un ADR.

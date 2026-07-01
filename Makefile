@@ -4,7 +4,11 @@
 # Raccourcis pour les opérations courantes. Tapez `make help` pour la liste.
 # ============================================================================
 
-.PHONY: help dev down logs build test lint ci pull-model seed reset-db backend-shell frontend-shell
+DEFAULT_OLLAMA_MODEL := llama3.2:3b
+OLLAMA_MODEL_FROM_ENV_FILE := $(shell sed -n 's/^[[:space:]]*OLLAMA_MODEL[[:space:]]*=[[:space:]]*//p' .env 2>/dev/null | head -n1)
+OLLAMA_MODEL ?= $(if $(OLLAMA_MODEL_FROM_ENV_FILE),$(OLLAMA_MODEL_FROM_ENV_FILE),$(DEFAULT_OLLAMA_MODEL))
+
+.PHONY: help dev down logs build test lint ci pull-model benchmark-llm seed reset-db backend-shell frontend-shell
 
 help:  ## Affiche cette aide
 	@echo "IPSSI_APOCAL_KIT — Cibles Makefile disponibles :"
@@ -36,10 +40,11 @@ build:  ## Reconstruit les images Docker (après changement de Dockerfile / requ
 
 # ---------- LLM ----------
 
-pull-model:  ## Télécharge Llama 3.1 8B dans Ollama (~4.7 Go, à faire UNE fois)
-	@echo "⏳ Téléchargement du modèle Llama 3.1 8B… (~5 min selon connexion)"
-	docker exec apocalipssi-2026-ollama ollama pull llama3.1:8b
-	@echo "✅ Modèle téléchargé."
+pull-model:  ## Télécharge le modèle Ollama configuré (OLLAMA_MODEL, défaut llama3.2:3b)
+	@OLLAMA_MODEL="$(OLLAMA_MODEL)" bash scripts/pull-model.sh
+
+benchmark-llm:  ## Mesure la latence LLM et échoue si elle dépasse 60 s
+	docker compose exec backend python manage.py benchmark_llm --threshold 60
 
 # ---------- Qualité de code ----------
 
