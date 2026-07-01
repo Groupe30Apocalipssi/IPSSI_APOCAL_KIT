@@ -17,7 +17,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { changePassword, deleteAccount, updateProfile } from '@/api/auth';
+import { changePassword, deleteAccount, updateProfile, exportUserData } from '@/api/auth';
 import { getApiErrorMessage } from '@/api/errors';
 
 export default function ProfilePage() {
@@ -45,6 +45,10 @@ export default function ProfilePage() {
   const [delConfirm, setDelConfirm] = useState(false);
   const [delErr, setDelErr] = useState<string | null>(null);
   const [delLoading, setDelLoading] = useState(false);
+
+  // --- Zone 4 : export ---
+  const [exportLoading, setExportLoading] = useState(false);
+
 
   const handleInfo = async (e: FormEvent) => {
     e.preventDefault();
@@ -81,6 +85,27 @@ export default function ProfilePage() {
       setPwdErr(getApiErrorMessage(err, 'Changement de mot de passe impossible.'));
     } finally {
       setPwdLoading(false);
+    }
+  };
+
+  const handleExport = async () => {
+    if (!user) return;
+    setExportLoading(true);
+    try {
+      const blob = await exportUserData();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const dateStr = new Date().toISOString().split('T')[0];
+      link.setAttribute('download', `export-donnees-${user.email}-${dateStr}.json`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert("Erreur lors de l'export des données : " + getApiErrorMessage(err));
+    } finally {
+      setExportLoading(false);
     }
   };
 
@@ -229,11 +254,12 @@ export default function ProfilePage() {
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
-            disabled
-            title="À implémenter (J3-bis) — droit à la portabilité RGPD"
-            className="btn-secondary opacity-60 cursor-not-allowed"
+            disabled={exportLoading}
+            onClick={handleExport}
+            title="Droit à la portabilité RGPD (Art. 20)"
+            className="btn-secondary"
           >
-            Exporter mes données (bientôt)
+            {exportLoading ? 'Export en cours…' : 'Exporter mes données'}
           </button>
           <button
             type="button"
@@ -245,6 +271,7 @@ export default function ProfilePage() {
           </button>
         </div>
       </section>
+
 
       {/* Zone 3 : danger */}
       <section className="card border-2 border-rose-200">

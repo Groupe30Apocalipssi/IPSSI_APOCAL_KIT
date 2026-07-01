@@ -11,6 +11,7 @@ from .views import (
     ResendVerificationView,
     SignupView,
     VerifyEmailView,
+    MeExportView,
 )
 
 urlpatterns = [
@@ -30,4 +31,6 @@ urlpatterns = [
     # Profil (modifier / changer mot de passe / supprimer le compte)
     path("profile/", ProfileView.as_view(), name="profile"),
     path("change-password/", ChangePasswordView.as_view(), name="change-password"),
+    path("me/export/", MeExportView.as_view(), name="me-export"),
 ]
+

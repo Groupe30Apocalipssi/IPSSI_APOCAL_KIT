@@ -303,3 +303,89 @@ class ChangePasswordView(APIView):
         Token.objects.filter(user=user).delete()
         token = Token.objects.create(user=user)
         return Response({"detail": "Mot de passe modifié.", "token": token.key})
+
+
+class MeExportView(APIView):
+    """
+    Export des données personnelles (droit à la portabilité RGPD Art. 20 / Art. 15).
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        import json
+        import hashlib
+        from django.utils import timezone
+        from django.http import HttpResponse
+        from .models import DataRequest
+
+        user = request.user
+        
+        # 1. Récupération des données utilisateur
+        user_data = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "date_joined": user.date_joined.isoformat() if user.date_joined else None,
+            "last_login": user.last_login.isoformat() if user.last_login else None,
+            "email_verified": user.profile.email_verified if hasattr(user, "profile") else False,
+        }
+        
+        # 2. Récupération des quiz
+        quizzes_data = []
+        quizzes = user.quizzes.all().prefetch_related("questions")
+        for quiz in quizzes:
+            questions_data = []
+            for question in quiz.questions.all():
+                questions_data.append({
+                    "index": question.index,
+                    "prompt": question.prompt,
+                    "options": question.options,
+                    "correct_index": question.correct_index,
+                    "selected_index": question.selected_index,
+                })
+            quizzes_data.append({
+                "id": quiz.id,
+                "title": quiz.title,
+                "source_text": quiz.source_text,
+                "score": quiz.score,
+                "created_at": quiz.created_at.isoformat() if quiz.created_at else None,
+                "updated_at": quiz.updated_at.isoformat() if quiz.updated_at else None,
+                "questions": questions_data,
+            })
+            
+        # 3. Placeholders pour les données non encore implémentées dans le schéma
+        # (conformément à l'esprit de l'Art. 15 : signalements, logs d'audit)
+        signalements = []
+        logs = []
+        
+        export_data = {
+            "exported_at": timezone.now().isoformat(),
+            "user": user_data,
+            "quizzes": quizzes_data,
+            "signalements": signalements,
+            "logs": logs,
+        }
+        
+        # Génération du JSON
+        json_bytes = json.dumps(export_data, indent=2, ensure_ascii=False).encode("utf-8")
+        
+        # Calcul du hash SHA-256 du JSON pour l'audit trail
+        export_hash = hashlib.sha256(json_bytes).hexdigest()
+        
+        # Persistance de l'audit trail
+        DataRequest.objects.create(
+            user=user,
+            status="completed",
+            answered_at=timezone.now(),
+            export_hash=export_hash
+        )
+        
+        filename = f"export-donnees-{user.email}-{timezone.now().strftime('%Y%m%d-%H%M%S')}.json"
+        
+        response = HttpResponse(json_bytes, content_type="application/json")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return response
+
+
