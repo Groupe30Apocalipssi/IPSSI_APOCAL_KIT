@@ -97,30 +97,33 @@ def test_export_requires_auth(client):
     assert response.status_code in (401, 403)
 
 
-def test_export_success_json(client, user):
+def test_export_success_zip(client, user):
     from rest_framework.authtoken.models import Token
-    from quizzes.models import Quiz
     from accounts.models import DataRequest
+    import io
+    import zipfile
     import json
-
-    # Création d'un quiz pour l'utilisateur
-    Quiz.objects.create(user=user, title="Mon Quiz Test", source_text="Source test content", score=8)
 
     token = Token.objects.create(user=user)
     client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
 
     response = client.get("/api/accounts/me/export/")
     assert response.status_code == 200
-    assert response["Content-Type"] == "application/json"
-    
-    data = json.loads(response.content.decode("utf-8"))
-    assert "user" in data
-    assert data["user"]["email"] == "alice@test.com"
-    assert "quizzes" in data
-    assert len(data["quizzes"]) == 1
-    assert data["quizzes"][0]["title"] == "Mon Quiz Test"
-    assert "signalements" in data
-    assert "logs" in data
+    assert response["Content-Type"] == "application/zip"
+    assert "Content-Disposition" in response
+
+    # Vérification du ZIP en mémoire
+    zip_file = zipfile.ZipFile(io.BytesIO(response.content))
+    filenames = zip_file.namelist()
+    assert "export_data.json" in filenames
+    assert "quizzes_history.csv" in filenames
+
+    # Lecture et parsing du JSON à l'intérieur du ZIP
+    json_data = json.loads(zip_file.read("export_data.json").decode("utf-8"))
+    assert "user" in json_data
+    assert "quizzes" in json_data
+    assert "signalements" in json_data
+    assert "logs" in json_data
 
     # Vérification de l'audit trail
     assert DataRequest.objects.filter(user=user, status="completed").exists()
@@ -130,6 +133,8 @@ def test_export_strict_isolation(client, user):
     from rest_framework.authtoken.models import Token
     from django.contrib.auth.models import User
     from quizzes.models import Quiz
+    import io
+    import zipfile
     import json
 
     # Utilisateur B et son quiz
@@ -141,9 +146,13 @@ def test_export_strict_isolation(client, user):
 
     response = client.get("/api/accounts/me/export/")
     assert response.status_code == 200
-    data = json.loads(response.content.decode("utf-8"))
+    assert response["Content-Type"] == "application/zip"
+    
+    zip_file = zipfile.ZipFile(io.BytesIO(response.content))
+    json_data = json.loads(zip_file.read("export_data.json").decode("utf-8"))
     
     # L'utilisateur A (Alice) ne doit pas voir les quiz de Bob
-    assert len(data["quizzes"]) == 0
+    assert len(json_data["quizzes"]) == 0
+
 
 

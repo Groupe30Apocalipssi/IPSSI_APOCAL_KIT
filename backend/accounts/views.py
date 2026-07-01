@@ -307,12 +307,16 @@ class ChangePasswordView(APIView):
 
 class MeExportView(APIView):
     """
-    Export des données personnelles (droit à la portabilité RGPD Art. 20 / Art. 15).
+    Export des données personnelles au format ZIP (contenant JSON + CSV)
+    (droit à la portabilité RGPD Art. 20 / Art. 15).
     """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         import json
+        import io
+        import zipfile
+        import csv
         import hashlib
         from django.utils import timezone
         from django.http import HttpResponse
@@ -382,10 +386,25 @@ class MeExportView(APIView):
             export_hash=export_hash
         )
         
-        filename = f"export-donnees-{user.email}-{timezone.now().strftime('%Y%m%d-%H%M%S')}.json"
+        # Génération du CSV
+        csv_buffer = io.StringIO()
+        writer = csv.writer(csv_buffer)
+        writer.writerow(["quiz_id", "title", "score", "created_at", "source_text"])
+        for q in quizzes_data:
+            writer.writerow([q["id"], q["title"], q["score"], q["created_at"], q["source_text"]])
+        csv_str = csv_buffer.getvalue()
         
-        response = HttpResponse(json_bytes, content_type="application/json")
+        # Création du ZIP en mémoire
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("export_data.json", json_bytes)
+            zf.writestr("quizzes_history.csv", csv_str.encode("utf-8"))
+            
+        filename = f"export-donnees-{user.email}-{timezone.now().strftime('%Y%m%d-%H%M%S')}.zip"
+        
+        response = HttpResponse(zip_buffer.getvalue(), content_type="application/zip")
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         return response
+
 
 

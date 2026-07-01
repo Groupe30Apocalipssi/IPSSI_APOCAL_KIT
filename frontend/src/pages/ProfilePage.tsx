@@ -97,7 +97,7 @@ export default function ProfilePage() {
       const link = document.createElement('a');
       link.href = url;
       const dateStr = new Date().toISOString().split('T')[0];
-      link.setAttribute('download', `export-donnees-${user.email}-${dateStr}.json`);
+      link.setAttribute('download', `export-donnees-${user.email}-${dateStr}.zip`);
       document.body.appendChild(link);
       link.click();
       link.parentNode?.removeChild(link);
