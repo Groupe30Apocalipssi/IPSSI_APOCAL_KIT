@@ -35,13 +35,21 @@ export function getApiErrorMessage(err: unknown, fallback = 'Une erreur est surv
 
     const data = err.response.data as Record<string, unknown> | undefined;
     if (data && typeof data === 'object') {
-      const fieldError =
+      const knownFieldError =
         asString(data.username) ??
         asString(data.email) ??
         asString(data.password) ??
+        asString(data.title) ??
+        asString(data.pdf) ??
+        asString(data.source_text) ??
         asString(data.non_field_errors) ??
         asString(data.detail);
-      if (fieldError) return fieldError;
+      if (knownFieldError) return knownFieldError;
+
+      for (const value of Object.values(data)) {
+        const fieldError = asString(value);
+        if (fieldError) return fieldError;
+      }
     }
 
     // Réponse sans corps exploitable : on expose au moins le code HTTP.

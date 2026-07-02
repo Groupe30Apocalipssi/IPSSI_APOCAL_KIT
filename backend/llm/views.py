@@ -14,10 +14,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from quizzes.models import Question, Quiz
-from quizzes.serializers import QuizSerializer
+from quizzes.serializers import QuizPublicSerializer
 
 from .pdf_utils import PDFError, extract_text_from_pdf
-from .serializers import GenerateQuizSerializer
+from .serializers import MIN_SOURCE_TEXT_CHARS, GenerateQuizSerializer
 from .services import get_llm_client
 from .services.base import LLMError
 
@@ -100,7 +100,7 @@ class GenerateQuizView(APIView):
 
     @extend_schema(
         request=GenerateQuizSerializer,
-        responses={201: QuizSerializer},
+        responses={201: QuizPublicSerializer},
         description=(
             "Génère 10 QCM à partir d'un cours. Fournir soit `pdf` (multipart) "
             "soit `source_text` (≥ 200 caractères). Le quiz est sauvegardé en "
@@ -133,6 +133,16 @@ class GenerateQuizView(APIView):
                 source_text = extract_text_from_pdf(pdf_file)
             except PDFError as exc:
                 return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            if len(source_text) < MIN_SOURCE_TEXT_CHARS:
+                return Response(
+                    {
+                        "detail": (
+                            "Le PDF contient trop peu de texte extractible "
+                            f"({len(source_text)}/{MIN_SOURCE_TEXT_CHARS} caractères)."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         # 2. Appel LLM (Ollama ou Mock)
         try:
@@ -161,4 +171,4 @@ class GenerateQuizView(APIView):
                     correct_index=q["correct_index"],
                 )
 
-        return Response(QuizSerializer(quiz).data, status=status.HTTP_201_CREATED)
+        return Response(QuizPublicSerializer(quiz).data, status=status.HTTP_201_CREATED)

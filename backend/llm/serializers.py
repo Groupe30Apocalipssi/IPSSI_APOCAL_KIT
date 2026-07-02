@@ -2,6 +2,10 @@
 
 from rest_framework import serializers
 
+from .pdf_utils import MAX_PDF_SIZE_BYTES
+
+MIN_SOURCE_TEXT_CHARS = 200
+
 
 class GenerateQuizSerializer(serializers.Serializer):
     """Input pour POST /api/llm/generate-quiz/.
@@ -23,14 +27,24 @@ class GenerateQuizSerializer(serializers.Serializer):
                 "Fournir soit `pdf`, soit `source_text` (≥ 200 caractères)."
             )
 
-        if not pdf and len(source_text) < 200:
+        if pdf and source_text:
+            raise serializers.ValidationError(
+                "Choisir une seule source : un PDF ou un texte collé, pas les deux."
+            )
+
+        if not pdf and len(source_text) < MIN_SOURCE_TEXT_CHARS:
             raise serializers.ValidationError(
                 {
-                    "source_text": "Doit faire au moins 200 caractères.",
+                    "source_text": f"Doit faire au moins {MIN_SOURCE_TEXT_CHARS} caractères.",
                 }
             )
 
         if pdf and not pdf.name.lower().endswith(".pdf"):
             raise serializers.ValidationError({"pdf": "Seuls les fichiers .pdf sont acceptés."})
 
+        if pdf and getattr(pdf, "size", 0) > MAX_PDF_SIZE_BYTES:
+            max_mb = MAX_PDF_SIZE_BYTES // (1024 * 1024)
+            raise serializers.ValidationError({"pdf": f"PDF trop volumineux (> {max_mb} Mo)."})
+
+        attrs["source_text"] = source_text
         return attrs

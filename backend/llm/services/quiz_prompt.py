@@ -31,6 +31,15 @@ Règles ABSOLUES :
 - Exactement 10 questions.
 - Chaque question a EXACTEMENT 4 options.
 - Une seule bonne réponse par question, indiquée par "correct_index" (0 à 3).
+- Les 10 questions doivent couvrir 10 notions différentes du cours.
+- Ne répète pas deux fois la même notion, même avec une formulation différente.
+- Rédige en français clair, correct et naturel.
+- Relis les questions et options avant de répondre : pas de faute évidente, pas de mot manquant.
+- Varie les formulations : n'utilise pas "Qu'est-ce que..." pour la majorité des questions.
+- Les 4 options doivent être plausibles, de longueur comparable, sans indice évident.
+- Les options doivent être des réponses complètes, pas seulement des intitulés de rôles isolés.
+- Les distracteurs doivent être faux mais crédibles par rapport au cours.
+- Ne mets jamais de symbole, préfixe ou texte qui révèle la bonne réponse dans les options.
 - Pas de markdown, pas de balises HTML, pas d'explications hors JSON.
 - Sortie = JSON STRICT et UNIQUEMENT JSON.
 

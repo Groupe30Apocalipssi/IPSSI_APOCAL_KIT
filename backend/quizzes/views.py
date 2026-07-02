@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 
 from .models import Question, Quiz
 from .serializers import (
-    QuizSerializer,
+    QuizPublicSerializer,
     QuizSummarySerializer,
     SubmitAnswersSerializer,
 )
@@ -36,9 +36,9 @@ class QuizListView(generics.ListAPIView):
 
 
 class QuizDetailView(generics.RetrieveAPIView):
-    """Détail d'un quiz (les 10 questions complètes)."""
+    """Détail d'un quiz à passer, sans exposer les bonnes réponses."""
 
-    serializer_class = QuizSerializer
+    serializer_class = QuizPublicSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

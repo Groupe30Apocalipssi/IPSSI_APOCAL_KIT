@@ -27,7 +27,7 @@ export default function QuizPage() {
   };
 
   const handleSubmit = async () => {
-    if (!quiz || Object.keys(answers).length !== 10) return;
+    if (!quiz || Object.keys(answers).length !== quiz.questions.length) return;
     setSubmitting(true);
     try {
       const payload = quiz.questions.map((q) => ({
@@ -48,7 +48,8 @@ export default function QuizPage() {
   if (error) return <p className="text-rose-600">{error}</p>;
   if (!quiz) return null;
 
-  const allAnswered = Object.keys(answers).length === 10;
+  const answeredCount = Object.keys(answers).length;
+  const allAnswered = answeredCount === quiz.questions.length;
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -93,6 +94,7 @@ export default function QuizPage() {
       {quiz.questions.map((q) => {
         const userChoice = answers[q.index];
         const detail = result?.details.find((d) => d.index === q.index);
+        const correctIndex = detail?.correct_index;
 
         return (
           <article key={q.index} className="card">
@@ -103,7 +105,7 @@ export default function QuizPage() {
             <div className="space-y-2">
               {q.options.map((opt, optIdx) => {
                 const isSelected = userChoice === optIdx;
-                const isCorrect = detail && q.correct_index === optIdx;
+                const isCorrect = correctIndex === optIdx;
                 const isWrongPick = detail && isSelected && !detail.correct;
 
                 let cls = 'border-slate-200 hover:bg-slate-50';
@@ -152,7 +154,7 @@ export default function QuizPage() {
             ? 'Correction en cours…'
             : allAnswered
               ? '🎯 Soumettre mes réponses'
-              : `Répondre à toutes les questions (${Object.keys(answers).length}/10)`}
+              : `Répondre à toutes les questions (${answeredCount}/${quiz.questions.length})`}
         </button>
       )}
     </div>

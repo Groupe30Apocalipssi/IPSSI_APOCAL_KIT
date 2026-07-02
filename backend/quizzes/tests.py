@@ -67,6 +67,7 @@ def test_quiz_detail(auth_client, sample_quiz):
     response = auth_client.get(f"/api/quizzes/{sample_quiz.id}/")
     assert response.status_code == 200
     assert len(response.data["questions"]) == 10
+    assert "correct_index" not in response.data["questions"][0]
 
 
 def test_quiz_detail_404_for_other_users_quiz(auth_client, other_user):
@@ -89,6 +90,7 @@ def test_answer_all_correct(auth_client, sample_quiz):
     assert response.data["score"] == 10
     assert response.data["total"] == 10
     assert all(d["correct"] for d in response.data["details"])
+    assert response.data["details"][0]["correct_index"] == 0
     sample_quiz.refresh_from_db()
     assert sample_quiz.score == 10
 

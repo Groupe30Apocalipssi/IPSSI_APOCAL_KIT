@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { generateQuiz } from '@/api/llm';
 import { getApiErrorMessage } from '@/api/errors';
 
+const MIN_SOURCE_TEXT_CHARS = 200;
+const MAX_PDF_SIZE_BYTES = 5 * 1024 * 1024;
+const MAX_PDF_SIZE_MB = MAX_PDF_SIZE_BYTES / (1024 * 1024);
+
 export default function UploadPage() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -12,9 +16,30 @@ export default function UploadPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const textLength = sourceText.trim().length;
+  const pdfTooLarge = pdf ? pdf.size > MAX_PDF_SIZE_BYTES : false;
+  const canSubmit =
+    title.trim().length > 0 &&
+    (mode === 'text' ? textLength >= MIN_SOURCE_TEXT_CHARS : !!pdf && !pdfTooLarge) &&
+    !loading;
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (mode === 'text' && textLength < MIN_SOURCE_TEXT_CHARS) {
+      setError(`Le texte doit faire au moins ${MIN_SOURCE_TEXT_CHARS} caractères.`);
+      return;
+    }
+    if (mode === 'pdf' && !pdf) {
+      setError('Sélectionnez un fichier PDF.');
+      return;
+    }
+    if (pdfTooLarge) {
+      setError(`Le PDF doit faire ${MAX_PDF_SIZE_MB} Mo maximum.`);
+      return;
+    }
+
     setLoading(true);
     try {
       const quiz = await generateQuiz({
@@ -60,7 +85,10 @@ export default function UploadPage() {
           <div className="flex gap-2 mb-3">
             <button
               type="button"
-              onClick={() => setMode('text')}
+              onClick={() => {
+                setMode('text');
+                setError(null);
+              }}
               className={`px-3 py-1 rounded text-sm font-medium ${
                 mode === 'text'
                   ? 'bg-indigo-600 text-white'
@@ -71,7 +99,10 @@ export default function UploadPage() {
             </button>
             <button
               type="button"
-              onClick={() => setMode('pdf')}
+              onClick={() => {
+                setMode('pdf');
+                setError(null);
+              }}
               className={`px-3 py-1 rounded text-sm font-medium ${
                 mode === 'pdf'
                   ? 'bg-indigo-600 text-white'
@@ -86,7 +117,7 @@ export default function UploadPage() {
             <textarea
               required
               rows={10}
-              minLength={200}
+              minLength={MIN_SOURCE_TEXT_CHARS}
               value={sourceText}
               onChange={(e) => setSourceText(e.target.value)}
               placeholder="Collez ici le texte de votre cours (au moins 200 caractères)…"
@@ -97,18 +128,33 @@ export default function UploadPage() {
               type="file"
               accept=".pdf,application/pdf"
               required
-              onChange={(e) => setPdf(e.target.files?.[0] ?? null)}
+              onChange={(e) => {
+                const file = e.target.files?.[0] ?? null;
+                setPdf(file);
+                setError(
+                  file && file.size > MAX_PDF_SIZE_BYTES
+                    ? `Le PDF doit faire ${MAX_PDF_SIZE_MB} Mo maximum.`
+                    : null,
+                );
+              }}
               className="input"
             />
           )}
           {mode === 'text' && (
             <p className="text-xs text-slate-500 mt-1">
-              {sourceText.length} / 200 caractères minimum
+              {textLength} / {MIN_SOURCE_TEXT_CHARS} caractères minimum
+            </p>
+          )}
+          {mode === 'pdf' && (
+            <p className={`text-xs mt-1 ${pdfTooLarge ? 'text-rose-600' : 'text-slate-500'}`}>
+              {pdf
+                ? `${pdf.name} · ${(pdf.size / (1024 * 1024)).toFixed(1)} Mo`
+                : `PDF texte uniquement, ${MAX_PDF_SIZE_MB} Mo maximum. Les PDF scannés sans texte ne sont pas pris en charge.`}
             </p>
           )}
         </div>
 
-        <button type="submit" disabled={loading} className="btn-primary w-full">
+        <button type="submit" disabled={!canSubmit} className="btn-primary w-full">
           {loading ? (
             <>
               <span className="animate-spin">⏳</span> Génération en cours… (1 à 5 min sur CPU,
