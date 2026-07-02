@@ -2,11 +2,8 @@
 
 import pytest
 from django.contrib.auth.models import User
-<<<<<<< Updated upstream
-=======
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
->>>>>>> Stashed changes
 from django.test import override_settings
 from rest_framework.test import APIClient
 
