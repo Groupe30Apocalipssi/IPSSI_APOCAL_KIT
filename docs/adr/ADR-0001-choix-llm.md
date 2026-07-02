@@ -1,8 +1,8 @@
-# ADR-001 : Choix du modèle LLM pour la génération de quiz
+# ADR-0001 : Choix du modèle LLM pour la génération de quiz
 
 **Statut** : Accepté
-**Date** : 30 juin 2026
-**Décideurs** : Équipe Groupe 30 (Keziah PERFILLON - Benchmark, Nick BEKOLO - documentation)
+**Date** : 2026-07-01
+**Décideurs** : Équipe Groupe 30 (Keziah PERFILLON — benchmark, Julien CANTAU — implémentation, Nick BEKOLO — documentation)
 
 ---
 
@@ -33,7 +33,7 @@ La contrainte RGPD impose un traitement **local et souverain** des données scol
 
 ## 3. Décision retenue
 
-Nous retenons l'**option B : Llama 3.2 3B** comme modèle par défaut pour la génération de quiz.
+Nous retenons l'**option B : Llama 3.2 3B** comme modèle Ollama local par défaut pour la génération de quiz.
 
 ---
 
@@ -43,6 +43,7 @@ Nous retenons l'**option B : Llama 3.2 3B** comme modèle par défaut pour la g�
 - **Gemini 1.5 Flash (option D)** est exclu malgré ses performances excellentes : il enverrait les documents de cours (données scolaires, potentiellement données d'élèves mineurs) vers des serveurs hors UE, ce qui viole l'invariant non-négociable de conformité RGPD du projet.
 - **Phi-3 Mini (option C)** est une alternative valide (14.8s, qualité légèrement supérieure à B) mais se rapproche dangereusement du seuil de 15s, laissant peu de marge pour absorber une charge serveur plus élevée en production.
 - **Llama 3.2 3B (option B)** offre le meilleur compromis : un gain de vitesse de **3.7x** par rapport au modèle par défaut, une marge confortable sous le seuil des 15s (12.4s médiane, 17.2s p95), une empreinte mémoire réduite (2.2 Go vs 5.8 Go, libérant des ressources serveur), et une conformité RGPD totale.
+- Il conserve l'engagement produit « local-first » et reste installable avec la commande existante `make pull-model`, et configurable via `.env` et via l'admin.
 
 La baisse de qualité observée (3.6/5 vs 4.6/5) est jugée acceptable et sera compensée par des actions correctives (cf. conséquences).
 
@@ -52,19 +53,23 @@ La baisse de qualité observée (3.6/5 vs 4.6/5) est jugée acceptable et sera c
 
 **Positives**
 - Latence médiane divisée par 3.7, sous le seuil utilisateur critique
-- Empreinte mémoire réduite de 62%, libère des ressources pour la montée en charge
-- Conformité RGPD maintenue à 100%
+- Empreinte mémoire réduite de 62 %, libère des ressources pour la montée en charge
+- Conformité RGPD maintenue à 100 %
+- Démarrage plus accessible sur les machines étudiantes
+- La validation devient mesurable avec `make benchmark-llm`
 
 **Négatives**
 - Qualité subjective des questions en baisse (-1.0 point sur 5) : formulations parfois plus simplistes ou répétitives
 - Risque accru d'erreurs de format JSON en sortie, nécessitant un prompt système plus robuste
+- Qualité potentiellement inférieure au 8B sur certains cours complexes
 
 **À surveiller**
+- `make benchmark-llm` doit passer sur la machine de démonstration
 - Mettre en place une étape de validation/parsing strict des questions générées (retry automatique en cas de JSON malformé)
 - Consolider le prompt système pour limiter les répétitions de formulation
-- Réévaluer ce choix si la qualité perçue par les utilisateurs en Sprint Review s'avère insuffisante (possibilité de bascule vers Phi-3 Mini en fallback)
-- Documenter ce changement dans le Sprint Backlog (tâches de migration feature-flaggée + tests)
+- Surveiller les questions hors-sujet en recette
+- Réévaluer ce choix si la qualité perçue par les utilisateurs en Sprint Review s'avère insuffisante (bascule possible vers Phi-3 Mini en fallback, ou un backend cloud documenté par un nouvel ADR)
 
 ---
 
-*Rédigé par Nick BEKOLO, basé sur le benchmark de Keziah PERFILLON — Perturbation J2, 30 juin 2026*
+*Rédigé par Nick BEKOLO, basé sur le benchmark de Keziah PERFILLON et l'implémentation de Julien CANTAU — Perturbation J2, 01 juillet 2026.*
