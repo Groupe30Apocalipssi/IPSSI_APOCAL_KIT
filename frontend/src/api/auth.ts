@@ -8,6 +8,8 @@
  */
 import { api, setToken, clearToken } from './client';
 
+export type Role = 'student' | 'teacher';
+
 export type User = {
   id: number;
   username: string;
@@ -18,6 +20,8 @@ export type User = {
   email_verified?: boolean;
   /** Compte administrateur (accès à la page /admin) ? */
   is_staff?: boolean;
+  /** Rôle choisi à l'inscription : ouvre l'espace enseignant si "teacher". */
+  role?: Role;
 };
 
 type LoginResponse = { token: string; user: User };
@@ -35,6 +39,7 @@ export async function signup(input: {
   password: string;
   first_name?: string;
   last_name?: string;
+  role?: Role;
 }): Promise<User> {
   const { data } = await api.post<User>('/accounts/signup/', input);
   // Auto-login après signup (réutilise email + mot de passe).

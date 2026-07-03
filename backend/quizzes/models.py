@@ -11,6 +11,13 @@ from django.db import models
 
 
 class Quiz(models.Model):
+    STATUS_DRAFT = "draft"
+    STATUS_PUBLISHED = "published"
+    STATUS_CHOICES = [
+        (STATUS_DRAFT, "Brouillon"),
+        (STATUS_PUBLISHED, "Publié"),
+    ]
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -28,6 +35,39 @@ class Quiz(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # --- Espace enseignant (classroom) --------------------------------------
+    # Un quiz peut être rattaché à une classe. Le quiz « gabarit » créé par
+    # l'enseignant (is_template=True) sert à la relecture/édition avant
+    # publication ; chaque étudiant reçoit ensuite sa propre copie
+    # (is_template=False, source_quiz=gabarit) qui se comporte comme n'importe
+    # quel quiz personnel (aucun changement sur le flux de passage existant).
+    classe = models.ForeignKey(
+        "classroom.Classe",
+        on_delete=models.CASCADE,
+        related_name="quizzes",
+        null=True,
+        blank=True,
+        help_text="Classe à laquelle ce quiz est rattaché (espace enseignant).",
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=STATUS_PUBLISHED,
+        help_text="Brouillon (en relecture) ou publié (visible/joué par les étudiants).",
+    )
+    is_template = models.BooleanField(
+        default=False,
+        help_text="Gabarit enseignant (relecture/édition) — jamais joué directement.",
+    )
+    source_quiz = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="student_copies",
+        help_text="Gabarit dont ce quiz est une copie (rempli pour les copies étudiantes).",
+    )
 
     class Meta:
         ordering = ["-created_at"]

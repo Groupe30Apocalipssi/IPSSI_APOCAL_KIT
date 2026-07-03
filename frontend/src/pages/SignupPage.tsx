@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signup } from '@/api/auth';
+import { signup, type Role } from '@/api/auth';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteConfig } from '@/contexts/SiteConfigContext';
 import { getApiErrorMessage } from '@/api/errors';
@@ -14,6 +14,7 @@ export default function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<Role>('student');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -27,10 +28,11 @@ export default function SignupPage() {
         password,
         first_name: firstName || undefined,
         last_name: lastName || undefined,
+        role,
       });
       await refresh();
       // Un bandeau (dans le Layout) invitera ensuite à confirmer l'email.
-      navigate('/upload', { replace: true });
+      navigate(role === 'teacher' ? '/teacher/classes' : '/upload', { replace: true });
     } catch (err) {
       setError(getApiErrorMessage(err, 'Inscription impossible.'));
     } finally {
@@ -128,6 +130,34 @@ export default function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="input"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Je m'inscris en tant que</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setRole('student')}
+                className={`flex-1 px-3 py-2 rounded text-sm font-medium border ${
+                  role === 'student'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                🎓 Étudiant
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('teacher')}
+                className={`flex-1 px-3 py-2 rounded text-sm font-medium border ${
+                  role === 'teacher'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                👩‍🏫 Enseignant
+              </button>
+            </div>
           </div>
 
           <button type="submit" disabled={loading} className="btn-primary w-full">

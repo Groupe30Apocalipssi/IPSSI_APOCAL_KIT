@@ -14,8 +14,8 @@
 apocalipssi26.elafrit.com {
 	encode zstd gzip
 
-	# --- Backend Django : API, admin, statiques (WhiteNoise), health ---
-	@backend path /api/* /admin /admin/* /static/* /health/*
+	# --- Backend Django : API, admin, statiques (WhiteNoise), media, health ---
+	@backend path /api/* /admin /admin/* /static/* /media/* /health/*
 	handle @backend {
 		reverse_proxy backend:8000
 	}

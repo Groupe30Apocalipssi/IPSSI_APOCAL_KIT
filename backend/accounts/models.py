@@ -20,6 +20,13 @@ from django.db import models
 class Profile(models.Model):
     """Informations complémentaires attachées à un utilisateur."""
 
+    ROLE_STUDENT = "student"
+    ROLE_TEACHER = "teacher"
+    ROLE_CHOICES = [
+        (ROLE_STUDENT, "Étudiant"),
+        (ROLE_TEACHER, "Enseignant"),
+    ]
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -28,10 +35,17 @@ class Profile(models.Model):
     # Validation "soft" : le compte fonctionne même si l'email n'est pas vérifié,
     # mais un bandeau invite l'utilisateur à cliquer le lien de confirmation.
     email_verified = models.BooleanField(default=False)
+    # Rôle choisi à l'inscription : distingue l'espace « enseignant » (gestion
+    # de classes) de l'espace « étudiant » (par défaut, comportement inchangé).
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=ROLE_STUDENT)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return f"Profile<{self.user.email or self.user.username}>"
+
+    @property
+    def is_teacher(self) -> bool:
+        return self.role == self.ROLE_TEACHER
 
 
 def get_or_create_profile(user) -> Profile:

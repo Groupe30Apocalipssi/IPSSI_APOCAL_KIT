@@ -40,7 +40,9 @@ export function getApiErrorMessage(err: unknown, fallback = 'Une erreur est surv
         asString(data.email) ??
         asString(data.password) ??
         asString(data.non_field_errors) ??
-        asString(data.detail);
+        asString(data.detail) ??
+        // Repli générique : première erreur de champ trouvée (ex. `code`, `name`, `title`…).
+        Object.values(data).map(asString).find((v) => v !== undefined);
       if (fieldError) return fieldError;
     }
 

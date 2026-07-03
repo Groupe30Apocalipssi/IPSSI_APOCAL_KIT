@@ -43,7 +43,7 @@ PROJECT_NAME = "Groupe30Apocalipssi"
 TEAM_NAME = "Groupe30Apocalipssi Team"
 BOARD_ID = "Issues"
 
-PERSONAL_ACCESS_TOKEN = os.environ.get("ADO_PAT", "PUT_YOUR_PAT_HERE")
+PERSONAL_ACCESS_TOKEN ="8IJ102V7qlsbokRS7g9xfxgnYsbQZWp3OzzEcRGayb2I25duqyyvJQQJ99CFACAAAAArXVRsAAASAZDO3KNx" #os.environ.get("ADO_PAT", "PUT_YOUR_PAT_HERE")
 
 OUTPUT_MARKDOWN_FILE = "board_export.md"
 OUTPUT_HTML_FILE = "board_report.html"
@@ -895,9 +895,11 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
 a{color:var(--accent);text-decoration:none}
-.wrap{display:grid;grid-template-columns:250px 1fr;max-width:1300px;margin:0 auto}
-aside{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:20px 16px;border-right:1px solid var(--line);background:var(--card)}
-aside .title{font-weight:600;font-size:15px;margin-bottom:6px}
+.wrap{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;max-width:1440px;margin:0 auto}
+aside{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:20px 16px;background:var(--card)}
+aside.left{border-right:1px solid var(--line)}
+aside.right{border-left:1px solid var(--line)}
+aside .title{font-weight:600;font-size:15px;margin-bottom:10px}
 .navlink{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:6px;color:var(--ink);font-size:14px;cursor:pointer}
 .navlink:hover{background:var(--bg)}
 .navlink.active{background:#eef2ff;color:var(--accent);font-weight:600}
@@ -975,17 +977,23 @@ h1{font-size:24px;margin:0 0 4px}
 .etable th:first-child,.etable td:first-child{text-align:left}
 .etable th{color:var(--muted);font-weight:600}
 .note{font-size:12px;color:var(--muted);margin-top:8px}
+.scope-tag{font-size:11px;font-weight:500;color:var(--accent);background:#eef2ff;padding:2px 8px;border-radius:20px}
 .sprint-card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px}
 .sprint-card:last-child{margin-bottom:0}
-.sprint-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sprint-dates{color:var(--muted);font-size:13px}
+.sprint-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sprint-dates{color:var(--muted);font-size:12px;margin-top:4px}
+.sprint-prog{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:8px 0}
+.sprint-prog .mini{flex:1}
+.sprint-cap{margin-top:6px}
+.sprint-cap>summary{cursor:pointer;font-size:12px;color:var(--accent);list-style:none}
+.sprint-cap>summary::-webkit-details-marker{display:none}
 .tf{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#eef0f3;color:#4b5563}
 .tf.current{background:#e3f6ee;color:var(--done)}
 .tf.future{background:#eef2ff;color:#4338ca}
 .tf.past{background:#eef0f3;color:#6b7280}
+@media(max-width:1080px){.wrap{grid-template-columns:1fr}aside{display:none}.charts{grid-template-columns:1fr}}
 .empty{color:var(--muted);font-size:14px;padding:20px;text-align:center}
 footer{color:var(--muted);font-size:12px;margin:30px 0 10px;text-align:center}
-@media(max-width:820px){.wrap{grid-template-columns:1fr}aside{display:none}.charts{grid-template-columns:1fr}}
 @media print{
   aside,.toolbar{display:none!important}
   main{padding:0}
@@ -998,7 +1006,7 @@ footer{color:var(--muted);font-size:12px;margin:30px 0 10px;text-align:center}
 </head>
 <body>
 <div class="wrap">
-  <aside>
+  <aside class="left">
     <div class="title">Navigation</div>
     <div id="nav"></div>
   </aside>
@@ -1011,7 +1019,6 @@ footer{color:var(--muted);font-size:12px;margin:30px 0 10px;text-align:center}
       <div class="panel"><h4>Avancement par artefact</h4><div class="chart-tall"><canvas id="cTag" role="img" aria-label="Avancement par artefact"></canvas></div></div>
       <div class="panel" style="grid-column:1/-1"><h4>Charge par membre</h4><div class="chart-tall"><canvas id="cMember" role="img" aria-label="Charge par membre"></canvas></div></div>
     </div>
-    <div id="sprintPanel"></div>
     <div id="effortPanel"></div>
     <div class="toolbar">
       <input type="search" id="q" placeholder="Rechercher (titre, id, membre, tag)…">
@@ -1028,6 +1035,10 @@ footer{color:var(--muted);font-size:12px;margin:30px 0 10px;text-align:center}
     <div id="content"></div>
     <footer id="footer"></footer>
   </main>
+  <aside class="right">
+    <div class="title">Sprints <span id="scopeTag" class="scope-tag"></span></div>
+    <div id="sprintPanel"></div>
+  </aside>
 </div>
 <script>
 const DATA = __DATA__;
@@ -1143,6 +1154,13 @@ function render(){
   nav.innerHTML=`<div class="navlink all${selectedGroup===null?" active":""}" onclick="selectGroup(null)"><span>Toutes les sections</span><span class="n">${items.length}</span></div>`+
     keys.map(k=>`<div class="navlink${selectedGroup===k?" active":""}" onclick="selectGroup('${encodeURIComponent(k)}')"><span>${esc(k)}</span><span class="n">${groups[k].length}</span></div>`).join("");
   const shown = selectedGroup && keys.includes(selectedGroup) ? [selectedGroup] : keys;
+  const scoped = shown.reduce((acc,k)=>acc.concat(groups[k]||[]),[]);
+  // Everything below reacts to the current scope (filters + selected section)
+  updateKpis(scoped);
+  updateCharts(scoped);
+  renderEffort(scoped);
+  renderSprints(scoped);
+  document.getElementById("scopeTag").textContent = selectedGroup ? selectedGroup : "";
   const content=document.getElementById("content");
   if(!shown.length){content.innerHTML='<div class="empty">Aucun élément ne correspond aux filtres.</div>';return;}
   content.innerHTML=shown.map(k=>{
@@ -1178,11 +1196,7 @@ function printReport(){
 window.onafterprint=()=>{_opened.forEach(d=>d.open=false);_opened=[];};
 
 function buildControls(){
-  const total=DATA.length, done=DATA.filter(i=>i.bucket==="Done").length;
-  const prog=DATA.filter(i=>i.bucket==="In Progress").length, todo=DATA.filter(i=>i.bucket==="To Do").length;
-  document.getElementById("subtitle").textContent=`${META.project} · ${META.team} · généré le ${META.generated} · ${total} work items · ${META.attachments} pièce(s) jointe(s)`;
-  document.getElementById("kpis").innerHTML=[["Total",total],["Terminés",done],["En cours",prog],["À faire",todo],["Avancement",(total?Math.round(100*done/total):0)+"%"]]
-    .map(([l,v])=>`<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join("");
+  document.getElementById("subtitle").textContent=`${META.project} · ${META.team} · généré le ${META.generated} · ${DATA.length} work items · ${META.attachments} pièce(s) jointe(s)`;
   document.getElementById("stateChips").innerHTML=[["all","Tous"],["To Do","À faire"],["In Progress","En cours"],["Done","Terminé"]]
     .map(([v,l])=>`<span class="chip${v==="all"?" on":""}" data-s="${v}">${l}</span>`).join("");
   document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{stateFilter=c.dataset.s;selectedGroup=null;
@@ -1196,72 +1210,93 @@ function buildControls(){
   document.getElementById("toggleAll").onclick=e=>{allOpen=!allOpen;e.target.textContent=allOpen?"Tout replier":"Tout déplier";render();};
   document.getElementById("footer").textContent=`Rapport généré automatiquement depuis Azure DevOps — ${META.generated}`;
 }
-function charts(){
-  const opt={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
-  const done=DATA.filter(i=>i.bucket==="Done").length,prog=DATA.filter(i=>i.bucket==="In Progress").length,todo=DATA.filter(i=>i.bucket==="To Do").length;
-  new Chart(cStatus,{type:"doughnut",data:{labels:["Terminé","En cours","À faire"],datasets:[{data:[done,prog,todo],backgroundColor:["#15a06e","#e0940f","#8b94a3"]}]},options:{...opt,cutout:"62%",plugins:{legend:{display:true,position:"bottom",labels:{boxWidth:12,font:{size:11}}}}}});
-  const tagStat={};DATA.forEach(i=>{const t=i.tags.length?i.tags[0]:"Sans artefact";(tagStat[t]=tagStat[t]||{d:0,r:0});i.bucket==="Done"?tagStat[t].d++:tagStat[t].r++;});
-  const tk=Object.keys(tagStat).sort((a,b)=>(tagStat[b].d+tagStat[b].r)-(tagStat[a].d+tagStat[a].r));
-  new Chart(cTag,{type:"bar",data:{labels:tk,datasets:[{label:"Terminé",data:tk.map(k=>tagStat[k].d),backgroundColor:"#15a06e"},{label:"Restant",data:tk.map(k=>tagStat[k].r),backgroundColor:"#d7dbe0"}]},options:{...opt,indexAxis:"y",scales:{x:{stacked:true},y:{stacked:true}}}});
-  const mStat={};DATA.forEach(i=>{const m=i.assignee;(mStat[m]=mStat[m]||{d:0,r:0});i.bucket==="Done"?mStat[m].d++:mStat[m].r++;});
-  const mk=Object.keys(mStat).sort((a,b)=>(mStat[b].d+mStat[b].r)-(mStat[a].d+mStat[a].r));
-  new Chart(cMember,{type:"bar",data:{labels:mk,datasets:[{label:"Terminé",data:mk.map(k=>mStat[k].d),backgroundColor:"#15a06e"},{label:"Restant",data:mk.map(k=>mStat[k].r),backgroundColor:"#d7dbe0"}]},options:{...opt,indexAxis:"y",scales:{x:{stacked:true},y:{stacked:true}}}});
+let chStatus, chTag, chMember;
+function createCharts(){
+  const opt={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},animation:{duration:250}};
+  chStatus=new Chart(cStatus,{type:"doughnut",data:{labels:["Terminé","En cours","À faire"],datasets:[{data:[0,0,0],backgroundColor:["#15a06e","#e0940f","#8b94a3"]}]},options:{...opt,cutout:"62%",plugins:{legend:{display:true,position:"bottom",labels:{boxWidth:12,font:{size:11}}}}}});
+  chTag=new Chart(cTag,{type:"bar",data:{labels:[],datasets:[{label:"Terminé",data:[],backgroundColor:"#15a06e"},{label:"Restant",data:[],backgroundColor:"#d7dbe0"}]},options:{...opt,indexAxis:"y",scales:{x:{stacked:true},y:{stacked:true}}}});
+  chMember=new Chart(cMember,{type:"bar",data:{labels:[],datasets:[{label:"Terminé",data:[],backgroundColor:"#15a06e"},{label:"Restant",data:[],backgroundColor:"#d7dbe0"}]},options:{...opt,indexAxis:"y",scales:{x:{stacked:true},y:{stacked:true}}}});
 }
-function renderEffort(){
+function updateKpis(items){
+  const total=items.length,done=items.filter(i=>i.bucket==="Done").length;
+  const prog=items.filter(i=>i.bucket==="In Progress").length,todo=items.filter(i=>i.bucket==="To Do").length;
+  document.getElementById("kpis").innerHTML=[["Total",total],["Terminés",done],["En cours",prog],["À faire",todo],["Avancement",(total?Math.round(100*done/total):0)+"%"]]
+    .map(([l,v])=>`<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join("");
+}
+function updateCharts(items){
+  const done=items.filter(i=>i.bucket==="Done").length,prog=items.filter(i=>i.bucket==="In Progress").length,todo=items.filter(i=>i.bucket==="To Do").length;
+  chStatus.data.datasets[0].data=[done,prog,todo]; chStatus.update("none");
+  const tagStat={};items.forEach(i=>{const t=i.tags.length?i.tags[0]:"Sans artefact";(tagStat[t]=tagStat[t]||{d:0,r:0});i.bucket==="Done"?tagStat[t].d++:tagStat[t].r++;});
+  const tk=Object.keys(tagStat).sort((a,b)=>(tagStat[b].d+tagStat[b].r)-(tagStat[a].d+tagStat[a].r));
+  chTag.data.labels=tk; chTag.data.datasets[0].data=tk.map(k=>tagStat[k].d); chTag.data.datasets[1].data=tk.map(k=>tagStat[k].r); chTag.update("none");
+  const mStat={};items.forEach(i=>{const m=i.assignee;(mStat[m]=mStat[m]||{d:0,r:0});i.bucket==="Done"?mStat[m].d++:mStat[m].r++;});
+  const mk=Object.keys(mStat).sort((a,b)=>(mStat[b].d+mStat[b].r)-(mStat[a].d+mStat[a].r));
+  chMember.data.labels=mk; chMember.data.datasets[0].data=mk.map(k=>mStat[k].d); chMember.data.datasets[1].data=mk.map(k=>mStat[k].r); chMember.update("none");
+}
+function renderEffort(items){
   const panel=document.getElementById("effortPanel");
-  const hasEffort=DATA.some(i=>i.effort);
+  const hasEffort=items.some(i=>i.effort);
   const hasCap=Object.keys(CAP).length>0;
   if(!hasEffort && !hasCap){ panel.innerHTML=""; return; }
-  // Aggregate effort per member
   const agg={};
-  DATA.forEach(i=>{
+  items.forEach(i=>{
     if(!i.effort) return;
     const m=i.assignee; const a=agg[m]=agg[m]||{est:0,done:0,rem:0,sp:0};
     a.est+=i.effort.est||0; a.done+=i.effort.done||0; a.rem+=i.effort.rem||0; a.sp+=i.effort.sp||0;
   });
-  // Capacity per member (sum across sprints, per day)
   const capMember={};
   Object.values(CAP).forEach(members=>Object.entries(members).forEach(([m,v])=>{capMember[m]=(capMember[m]||0)+v;}));
-  const members=[...new Set([...Object.keys(agg),...Object.keys(capMember)])].sort();
+  // Only show capacity rows for members present in scope (or with effort)
+  const scopeMembers=new Set(items.map(i=>i.assignee));
+  const members=[...new Set([...Object.keys(agg),...Object.keys(capMember).filter(m=>scopeMembers.has(m))])].sort();
   if(!members.length){ panel.innerHTML=""; return; }
   const showSP=Object.values(agg).some(a=>a.sp>0);
   const showHrs=Object.values(agg).some(a=>a.est||a.done||a.rem);
+  const round1=x=>Math.round(x*10)/10;
   let rows=members.map(m=>{
     const a=agg[m]||{est:0,done:0,rem:0,sp:0}; const cap=capMember[m];
     const load=(cap&&a.rem)?Math.round(100*a.rem/cap):null;
     return `<tr><td>${esc(m)}</td>
-      ${showHrs?`<td>${a.est||"—"}</td><td>${a.done||"—"}</td><td>${a.rem||"—"}</td>`:""}
+      ${showHrs?`<td>${a.est?round1(a.est):"—"}</td><td>${a.done?round1(a.done):"—"}</td><td>${a.rem?round1(a.rem):"—"}</td>`:""}
       ${showSP?`<td>${a.sp||"—"}</td>`:""}
       ${hasCap?`<td>${cap!=null?cap+" h/j":"—"}</td><td>${load!=null?load+"%":"—"}</td>`:""}
     </tr>`;
   }).join("");
   const head=`<tr><th>Membre</th>${showHrs?"<th>Estimé (h)</th><th>Réalisé (h)</th><th>Restant (h)</th>":""}${showSP?"<th>Story Points</th>":""}${hasCap?"<th>Capacité</th><th>Charge</th>":""}</tr>`;
-  panel.innerHTML=`<div class="panel effort-panel"><h4>Effort & capacité</h4>
+  panel.innerHTML=`<div class="panel effort-panel"><h4>Effort & capacité${selectedGroup?` — ${esc(selectedGroup)}`:""}</h4>
     <table class="etable">${head}${rows}</table>
-    ${!hasCap?'<div class="note">Aucune donnée de capacité (à configurer par sprint dans Azure DevOps).</div>':""}
     ${!hasEffort?'<div class="note">Aucun champ d\'effort trouvé (process Basic ?).</div>':""}
   </div>`;
 }
-function renderSprints(){
+function renderSprints(items){
   const el=document.getElementById("sprintPanel");
   const tf={past:"Passé",current:"En cours",future:"À venir"};
   if(!SPRINTS.length){
-    el.innerHTML=`<div class="panel"><h4>Sprints</h4><div class="note">Aucun sprint renvoyé par l'API pour cette équipe.<br>
-      Vérifie <b>Team settings → Team configuration → Iterations</b> : les sprints définis au niveau projet doivent être <b>rattachés à l'équipe</b> « ${esc(META.team)} » pour remonter ici (dates et capacité incluses).</div></div>`;
+    el.innerHTML=`<div class="note">Aucun sprint renvoyé par l'API pour cette équipe.<br>
+      Vérifie <b>Team settings → Team configuration → Iterations</b> : les sprints définis au niveau projet doivent être <b>rattachés à l'équipe</b> « ${esc(META.team)} » pour remonter ici (dates et capacité incluses).</div>`;
     return;
   }
-  el.innerHTML=`<div class="panel"><h4>Sprints</h4>`+SPRINTS.map(s=>{
+  el.innerHTML=SPRINTS.map(s=>{
+    const its=items.filter(i=>i.sprint===s.name);
+    const done=its.filter(i=>i.bucket==="Done").length;
+    const pct=its.length?Math.round(100*done/its.length):0;
+    const prog=its.length
+      ? `<div class="sprint-prog"><div class="mini"><span style="width:${pct}%"></span></div><span>${done}/${its.length} · ${pct}%</span></div>`
+      : `<div class="note">Aucun item de la sélection dans ce sprint.</div>`;
     const cap=Object.entries(s.capacity||{});
-    const capTable=cap.length
-      ?`<table class="etable" style="margin-top:8px"><tr><th>Membre</th><th>Capacité (h/j)</th></tr>${cap.map(([m,v])=>`<tr><td>${esc(m)}</td><td>${v}</td></tr>`).join("")}<tr><td><b>Total</b></td><td><b>${s.totalPerDay} h/j</b></td></tr></table>`
-      :'<div class="note">Aucune capacité renseignée pour ce sprint (Sprint → onglet Capacity dans Azure DevOps).</div>';
+    const capBody=cap.length
+      ? `<table class="etable" style="margin-top:6px"><tr><th>Membre</th><th>h/j</th></tr>${cap.map(([m,v])=>`<tr><td>${esc(m)}</td><td>${v}</td></tr>`).join("")}<tr><td><b>Total</b></td><td><b>${s.totalPerDay}</b></td></tr></table>`
+      : '<div class="note">Capacité non renseignée (onglet Capacity du sprint).</div>';
     const dates=(s.start||s.finish)?`${esc(s.start||"?")} → ${esc(s.finish||"?")}`:"dates non définies";
     return `<div class="sprint-card">
-      <div class="sprint-head"><b>${esc(s.name)}</b> <span class="tf ${esc(s.timeframe)}">${esc(tf[s.timeframe]||s.timeframe||"")}</span><span class="sprint-dates">📅 ${dates}</span></div>
-      ${capTable}</div>`;
-  }).join("")+`</div>`;
+      <div class="sprint-head"><b>${esc(s.name)}</b> <span class="tf ${esc(s.timeframe)}">${esc(tf[s.timeframe]||s.timeframe||"")}</span></div>
+      <div class="sprint-dates">📅 ${dates}</div>
+      ${prog}
+      <details class="sprint-cap"><summary>Capacité (${cap.length}) ▾</summary>${capBody}</details>
+    </div>`;
+  }).join("");
 }
-buildControls();charts();renderSprints();renderEffort();render();
+buildControls();createCharts();render();
 </script>
 </body>
 </html>

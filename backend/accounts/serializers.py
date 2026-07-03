@@ -12,13 +12,14 @@ from django.contrib.auth.password_validation import validate_password as django_
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
-from .models import get_or_create_profile
+from .models import Profile, get_or_create_profile
 
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer en lecture pour l'utilisateur connecté."""
 
     email_verified = serializers.SerializerMethodField()
+    role = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -31,11 +32,15 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             "email_verified",
             "is_staff",
+            "role",
         ]
         read_only_fields = fields
 
     def get_email_verified(self, obj) -> bool:
         return get_or_create_profile(obj).email_verified
+
+    def get_role(self, obj) -> str:
+        return get_or_create_profile(obj).role
 
 
 class SignupSerializer(serializers.ModelSerializer):
@@ -47,10 +52,15 @@ class SignupSerializer(serializers.ModelSerializer):
         style={"input_type": "password"},
         help_text="Au moins 8 caractères.",
     )
+    # Rôle choisi à l'inscription (étudiant par défaut) — ouvre l'espace
+    # « enseignant » (gestion de classes) si "teacher".
+    role = serializers.ChoiceField(
+        choices=Profile.ROLE_CHOICES, required=False, default=Profile.ROLE_STUDENT
+    )
 
     class Meta:
         model = User
-        fields = ["email", "password", "first_name", "last_name"]
+        fields = ["email", "password", "first_name", "last_name", "role"]
         extra_kwargs = {
             "email": {"required": True, "allow_blank": False},
             "first_name": {"required": False},
@@ -79,11 +89,14 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict) -> User:
         password = validated_data.pop("password")
+        role = validated_data.pop("role", Profile.ROLE_STUDENT)
         email = validated_data["email"]
         user = User(username=email, **validated_data)  # username = email (identifiant)
         user.set_password(password)
         user.save()
-        get_or_create_profile(user)  # profil avec email_verified=False
+        profile = get_or_create_profile(user)  # profil avec email_verified=False
+        profile.role = role
+        profile.save(update_fields=["role"])
         return user
 
 

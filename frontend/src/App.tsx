@@ -5,6 +5,7 @@ import { SiteConfigProvider } from '@/contexts/SiteConfigContext';
 import Layout from '@/components/Layout';
 import RequireAuth from '@/components/RequireAuth';
 import RequireAdmin from '@/components/RequireAdmin';
+import RequireTeacher from '@/components/RequireTeacher';
 import HomePage from '@/pages/HomePage';
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
@@ -18,6 +19,11 @@ import ProfilePage from '@/pages/ProfilePage';
 import DashboardPage from '@/pages/DashboardPage';
 import ReviewMistakesPage from '@/pages/ReviewMistakesPage';
 import AdminPage from '@/pages/admin/AdminPage';
+import JoinClassPage from '@/pages/JoinClassPage';
+import StudentClassPage from '@/pages/StudentClassPage';
+import TeacherClassesPage from '@/pages/teacher/TeacherClassesPage';
+import TeacherClassDetailPage from '@/pages/teacher/TeacherClassDetailPage';
+import TeacherQuizReviewPage from '@/pages/teacher/TeacherQuizReviewPage';
 import MentionsLegalesPage from '@/pages/legal/MentionsLegalesPage';
 import ConfidentialitePage from '@/pages/legal/ConfidentialitePage';
 import CGUPage from '@/pages/legal/CGUPage';
@@ -99,6 +105,50 @@ export default function App() {
                     <RequireAdmin>
                       <AdminPage />
                     </RequireAdmin>
+                  }
+                />
+
+                {/* Espace enseignant (US-25 à US-28) */}
+                <Route
+                  path="teacher/classes"
+                  element={
+                    <RequireTeacher>
+                      <TeacherClassesPage />
+                    </RequireTeacher>
+                  }
+                />
+                <Route
+                  path="teacher/classes/:id"
+                  element={
+                    <RequireTeacher>
+                      <TeacherClassDetailPage />
+                    </RequireTeacher>
+                  }
+                />
+                <Route
+                  path="teacher/classes/:id/quizzes/:quizId"
+                  element={
+                    <RequireTeacher>
+                      <TeacherQuizReviewPage />
+                    </RequireTeacher>
+                  }
+                />
+
+                {/* Étudiant : rejoindre une classe via un code, consulter une classe rejointe */}
+                <Route
+                  path="join-class"
+                  element={
+                    <RequireAuth>
+                      <JoinClassPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="classes/:id"
+                  element={
+                    <RequireAuth>
+                      <StudentClassPage />
+                    </RequireAuth>
                   }
                 />
 

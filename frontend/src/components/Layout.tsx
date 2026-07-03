@@ -38,9 +38,23 @@ export default function Layout() {
           <nav className="flex items-center gap-4 text-sm">
             {user ? (
               <>
-                <Link to="/upload" className="text-slate-700 hover:text-indigo-600">
-                  Nouveau quiz
-                </Link>
+                {user.role === 'teacher' ? (
+                  <Link to="/teacher/classes" className="text-slate-700 hover:text-indigo-600">
+                    Mes classes
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/upload" className="text-slate-700 hover:text-indigo-600">
+                      Nouveau quiz
+                    </Link>
+                    <Link
+                      to="/join-class"
+                      className="text-slate-700 hover:text-indigo-600 hidden sm:inline"
+                    >
+                      Rejoindre une classe
+                    </Link>
+                  </>
+                )}
                 <Link
                   to="/dashboard"
                   className="text-slate-700 hover:text-indigo-600 hidden sm:inline"

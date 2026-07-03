@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "llm",
     "quizzes",
     "administration",
+    "classroom",
 ]
 
 MIDDLEWARE = [
@@ -136,10 +137,13 @@ USE_I18N = True
 USE_TZ = True
 
 # ----------------------------------------------------------------------------
-# Statics
+# Statics & fichiers uploadés (supports de cours enseignant)
 # ----------------------------------------------------------------------------
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # En production (SECURE_PROD), WhiteNoise sert des statiques compressés avec un
 # manifeste à hash (cache long + invalidation auto). `collectstatic` est lancé
