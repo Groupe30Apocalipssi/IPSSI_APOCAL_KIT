@@ -3,52 +3,53 @@
 - Project: `Groupe30Apocalipssi`
 - Team: `Groupe30Apocalipssi Team`
 - Board: `Issues`
-- Generated at: `2026-07-02 06:54:15`
+- Generated at: `2026-07-03 13:48:49`
 - Backlogs exported: `3`
-- Sprints / iterations exported: `6`
-- Work items exported: `95`
+- Sprints / iterations exported: `7`
+- Work items exported: `105`
 - Attachments exported: `0`
 
 ## Résumé
 
 | Indicateur | Valeur |
 |---|---:|
-| Total | 95 |
-| Done | 71 |
-| In Progress | 9 |
-| To Do | 15 |
-| Avancement | 75% |
+| Total | 105 |
+| Done | 88 |
+| In Progress | 8 |
+| To Do | 9 |
+| Avancement | 84% |
 
 ```mermaid
 pie showData
     title Répartition par statut
-    "Done" : 71
-    "To Do" : 15
-    "In Progress" : 9
+    "Done" : 88
+    "To Do" : 9
+    "In Progress" : 8
 ```
 
 ## Avancement par artefact (7)
 
 | Artefact | Terminé | En cours | À faire | Total | Avancement |
 |---|---:|---:|---:|---:|---|
+| ReleasePlanning | 7 | 0 | 0 | 7 | ██████████ 100% |
 | CustomerJourney | 7 | 0 | 0 | 7 | ██████████ 100% |
 | VisionBoard | 8 | 0 | 0 | 8 | ██████████ 100% |
 | Backlog | 8 | 0 | 0 | 8 | ██████████ 100% |
 | SprintBacklog | 8 | 0 | 0 | 8 | ██████████ 100% |
 | StoryMap | 8 | 0 | 0 | 8 | ██████████ 100% |
 | Personas | 3 | 2 | 0 | 5 | ██████░░░░ 60% |
-| ReleasePlanning | 0 | 0 | 7 | 7 | ░░░░░░░░░░ 0% |
 
-## Charge par membre (7)
+## Charge par membre (8)
 
 | Membre | Terminé | Restant | Total | Avancement |
 |---|---:|---:|---:|---|
-| Kevin TCHIKAYA | 9 | 10 | 19 | █████░░░░░ 47% |
+| Kevin TCHIKAYA | 12 | 10 | 22 | █████░░░░░ 55% |
 | Keziah PERFILLON | 19 | 0 | 19 | ██████████ 100% |
 | Nick BEKOLO | 18 | 0 | 18 | ██████████ 100% |
 | Julien CANTAU | 9 | 4 | 13 | ███████░░░ 69% |
 | Helena MOUGAMMADALY | 8 | 3 | 11 | ███████░░░ 73% |
-| Yanis MEDJADI | 2 | 7 | 9 | ██░░░░░░░░ 22% |
+| Yanis MEDJADI | 9 | 0 | 9 | ██████████ 100% |
+| Non assigné | 7 | 0 | 7 | ██████████ 100% |
 | Mohamed Abdelmalek DORBANI | 6 | 0 | 6 | ██████████ 100% |
 
 ## Pièces jointes (0)
@@ -83,7 +84,7 @@ _Aucune pièce jointe._
 | Issues | Microsoft.RequirementCategory | requirement | 2 | Issue | Issue | False |
 | Tasks | Microsoft.TaskCategory | task | 1 | Task | Task | False |
 
-## Sprints / Iterations (6)
+## Sprints / Iterations (7)
 
 | Name | Path | Start | Finish | Time frame |
 |---|---|---|---|---|
@@ -92,9 +93,10 @@ _Aucune pièce jointe._
 | Sprint 2 Mardi Matin (9h00 – 12h30) | Groupe30Apocalipssi\Sprint 2 Mardi Matin (9h00 – 12h30) | 2026-06-30T00:00:00Z | 2026-06-30T00:00:00Z | past |
 | Sprint 3 Mardi Après-midi (14h00 – 18h00) | Groupe30Apocalipssi\Sprint 3 Mardi Après-midi (14h00 – 18h00) | 2026-06-30T00:00:00Z | 2026-06-30T00:00:00Z | past |
 | Sprint 4 Mercredi Matin (9h00 – 12h30) | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | 2026-07-01T00:00:00Z | 2026-07-01T00:00:00Z | past |
-| Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | 2026-07-01T00:00:00Z | 2026-07-01T00:00:00Z | current |
+| Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | 2026-07-01T00:00:00Z | 2026-07-01T00:00:00Z | past |
+| sprint 6 Jeudi | Groupe30Apocalipssi\sprint 6 Jeudi | 2026-07-02T00:00:00Z | 2026-07-02T00:00:00Z | current |
 
-## Work Items (95)
+## Work Items (105)
 
 ### Epic (1)
 
@@ -106,19 +108,25 @@ _Aucune pièce jointe._
 
 | ID | Title | Type | State | Board column | Iteration | Assigned to | Changed | Tags | 📎 |
 |---:|---|---|---|---|---|---|---|---|---:|
-| [97](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/97) | Sécurisation LLM 2/2 | Issue | Doing | Doing | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T13:51:56.61Z |  |  |
+| [97](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/97) | Sécurisation LLM 2/2 | Issue | Doing | Doing | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-02T06:48:31.56Z |  |  |
 | [8](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/8) | Personas | Issue | Doing | Doing | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Helena MOUGAMMADALY | 2026-07-01T13:40:42.537Z |  |  |
 | [65](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/65) | Gestion Agile | Issue | Doing | Doing | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T09:44:58.92Z |  |  |
 
-### Task (5)
+### Task (4)
 
 | ID | Title | Type | State | Board column | Iteration | Assigned to | Changed | Tags | 📎 |
 |---:|---|---|---|---|---|---|---|---|---:|
+| [77](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/77) | Réestimer les User Stories | Task | Doing |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-03T08:45:30.113Z |  |  |
 | [14](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/14) | Relecture et mise en forme finale | Task | Doing |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Helena MOUGAMMADALY | 2026-07-01T13:40:36.933Z | Personas |  |
 | [13](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/13) | Vérifier cohérence avec Vision Board et Customer Journey | Task | Doing |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Helena MOUGAMMADALY | 2026-07-01T13:40:31.903Z | Personas |  |
-| [78](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/78) | Préparer la démonstration | Task | Doing |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T12:24:29.71Z |  |  |
-| [96](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/96) | Revue des release planning | Task | Doing |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T12:24:17.55Z |  |  |
 | [76](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/76) | Mettre à jour le Sprint Backlog | Task | Doing |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T09:47:04.68Z |  |  |
+
+<details>
+<summary>77 - Réestimer les User Stories</summary>
+
+réestimer les User Stories impactées.
+
+</details>
 
 <details>
 <summary>14 - Relecture et mise en forme finale</summary>
@@ -153,17 +161,12 @@ documentation
 
 </details>
 
-### To Do (15)
+### To Do (9)
 
 | ID | Title | Type | State | Board column | Iteration | Assigned to | Changed | Tags | 📎 |
 |---:|---|---|---|---|---|---|---|---|---:|
-| [36](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/36) | Justifier la Release 2 | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:38:55.47Z | ReleasePlanning |  |
-| [35](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/35) | Identifier les dépendances | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:38:48.03Z | ReleasePlanning |  |
-| [37](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/37) | Vérifier cohérence avec Product Backlog | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:37:29.07Z | ReleasePlanning |  |
-| [32](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/32) | Répartir les User Stories par Sprint | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:37:20.417Z | ReleasePlanning |  |
-| [31](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/31) | Identifier le MVP Release 1 F1-F6 | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:37:14.647Z | ReleasePlanning |  |
-| [34](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/34) | Définir la capacité de chaque Sprint | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:37:05.327Z | ReleasePlanning |  |
-| [33](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/33) | Ajouter les stories Enseignant | Task | To Do |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:36:55.363Z | ReleasePlanning |  |
+| [107](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/107) | MVP 1.1.0 | Task | To Do |  | Groupe30Apocalipssi\sprint 6 Jeudi | Kevin TCHIKAYA | 2026-07-03T11:48:36.173Z |  |  |
+| [106](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/106) | Release 2 | Issue | To Do | To Do | Groupe30Apocalipssi\sprint 6 Jeudi | Kevin TCHIKAYA | 2026-07-03T11:48:29.23Z |  |  |
 | [86](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/86) | Rédiger la note de sécurité | Task | To Do |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T13:51:27.4Z |  |  |
 | [85](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/85) | Ajouter le test GitHub Actions | Task | To Do |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T13:51:23.88Z |  |  |
 | [80](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/80) | Rédiger les tests adversariaux | Task | To Do |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T13:51:17.38Z |  |  |
@@ -171,88 +174,48 @@ documentation
 | [75](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/75) | Valider les performances | Task | To Do |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Julien CANTAU | 2026-07-01T13:41:38.783Z |  |  |
 | [74](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/74) | Modifier la configuration | Task | To Do |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Julien CANTAU | 2026-07-01T13:41:33.717Z |  |  |
 | [73](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/73) | Installer le nouveau modèle | Task | To Do |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Julien CANTAU | 2026-07-01T13:41:27.83Z |  |  |
-| [77](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/77) | Réestimer les User Stories | Task | To Do |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-01T09:47:12.483Z |  |  |
-
-<details>
-<summary>36 - Justifier la Release 2</summary>
-
-Argumenter les reports.
-
-</details>
-
-<details>
-<summary>35 - Identifier les dépendances</summary>
-
-Lister les dépendances.
-
-</details>
-
-<details>
-<summary>37 - Vérifier cohérence avec Product Backlog</summary>
-
-Comparer backlog et planning.
-
-</details>
-
-<details>
-<summary>32 - Répartir les User Stories par Sprint</summary>
-
-Construire le planning.
-
-</details>
-
-<details>
-<summary>31 - Identifier le MVP Release 1 F1-F6</summary>
-
-Lister les fonctionnalités MVP.
-
-</details>
-
-<details>
-<summary>34 - Définir la capacité de chaque Sprint</summary>
-
-Définir la vélocité.
-
-</details>
-
-<details>
-<summary>33 - Ajouter les stories Enseignant</summary>
-
-Intégrer les nouvelles fonctionnalités.
-
-</details>
-
-<details>
-<summary>77 - Réestimer les User Stories</summary>
-
-réestimer les User Stories impactées.
-
-</details>
 
 ### In Progress (0)
 
 _No work items._
 
-### Done (71)
+### Done (88)
 
 | ID | Title | Type | State | Board column | Iteration | Assigned to | Changed | Tags | 📎 |
 |---:|---|---|---|---|---|---|---|---|---:|
+| [78](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/78) | Préparer la démonstration | Task | Done |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-03T08:45:17.587Z |  |  |
+| [96](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/96) | Revue des release planning | Task | Done |  | Groupe30Apocalipssi\Sprint 1 Lundi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-03T08:45:11.957Z |  |  |
+| [37](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/37) | Vérifier cohérence avec Product Backlog | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:42:26.863Z | ReleasePlanning |  |
+| [36](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/36) | Justifier la Release 2 | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:42:21.973Z | ReleasePlanning |  |
+| [35](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/35) | Identifier les dépendances | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:42:10.357Z | ReleasePlanning |  |
+| [34](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/34) | Définir la capacité de chaque Sprint | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:42:04.93Z | ReleasePlanning |  |
+| [33](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/33) | Ajouter les stories Enseignant | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:41:59.247Z | ReleasePlanning |  |
+| [32](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/32) | Répartir les User Stories par Sprint | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:41:53.653Z | ReleasePlanning |  |
+| [31](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/31) | Identifier le MVP Release 1 F1-F6 | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-03T08:41:48.68Z | ReleasePlanning |  |
+| [98](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/98) | Release 1 (livraison v1.0.0) | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Kevin TCHIKAYA | 2026-07-02T07:18:51.06Z |  |  |
+| [103](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/103) | Backend — endpoints API | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:18:39.557Z |  |  |
+| [105](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/105) | Bugs trouvés et corrigés en cours de route | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:18:16.703Z |  |  |
+| [104](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/104) | Frontend — pages | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:17:43.503Z |  |  |
+| [101](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/101) | Étendre Quiz : champs classe, status (brouillon/publié), is_template, source_quiz (mécanisme de clonage gabarit → copie par étudiant) | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:15:40.31Z |  |  |
+| [102](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/102) | Générer et valider les migrations (accounts, classroom, quizzes) | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:15:32.287Z |  |  |
+| [100](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/100) | Créer l'app classroom : modèles Classe (code à 6 caractères), Enrollment, CourseDocument | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:14:50.777Z |  |  |
+| [99](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/99) | Ajouter le champ role (étudiant/enseignant) sur Profile, exposé à l'inscription (accounts/models.py, accounts/serializers.py) | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) |  | 2026-07-02T07:14:22.78Z |  |  |
+| [79](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/79) | Sécurisation LLM 1/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-02T06:48:31.56Z |  |  |
+| [87](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/87) | Conformité RGPD 1/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Helena MOUGAMMADALY | 2026-07-02T06:48:31.56Z |  |  |
+| [95](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/95) | Conformité RGPD 2/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Keziah PERFILLON | 2026-07-02T06:48:31.56Z |  |  |
 | [6](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/6) | Customer Journey | Issue | Done | Done | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Mohamed Abdelmalek DORBANI | 2026-07-01T15:33:49.893Z |  |  |
 | [60](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/60) | Vérifier cohérence avec Story Map | Task | Done |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Mohamed Abdelmalek DORBANI | 2026-07-01T15:33:38.587Z | CustomerJourney |  |
 | [58](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/58) | Identifier les points de friction | Task | Done |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Mohamed Abdelmalek DORBANI | 2026-07-01T15:33:25.897Z | CustomerJourney |  |
 | [59](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/59) | Identifier les opportunités produit | Task | Done |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Mohamed Abdelmalek DORBANI | 2026-07-01T15:33:13.747Z | CustomerJourney |  |
 | [54](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/54) | Construire le parcours étudiant | Task | Done |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Helena MOUGAMMADALY | 2026-07-01T15:10:08.62Z | CustomerJourney |  |
 | [3](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/3) | Release Planning | Issue | Done | Done | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Yanis MEDJADI | 2026-07-01T14:35:57.97Z |  |  |
-| [79](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/79) | Sécurisation LLM 1/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-01T14:24:01.587Z |  |  |
 | [84](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/84) | Ajouter la validation post-LLM | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-01T14:23:40.21Z |  |  |
 | [83](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/83) | Séparer System/User | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-01T14:23:33.257Z |  |  |
 | [82](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/82) | Modifier le System Prompt | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-01T14:22:55.047Z |  |  |
 | [81](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/81) | Créer les 5 prompts d'attaque | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Nick BEKOLO | 2026-07-01T14:22:48.273Z |  |  |
 | [57](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/57) | Ajouter actions pensées émotions | Task | Done |  | Groupe30Apocalipssi\Sprint 4 Mercredi Matin (9h00 – 12h30) | Mohamed Abdelmalek DORBANI | 2026-07-01T13:47:33.493Z | CustomerJourney |  |
-| [87](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/87) | Conformité RGPD 1/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Helena MOUGAMMADALY | 2026-07-01T13:46:13.087Z |  |  |
 | [94](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/94) | Rédiger la réponse à Hugo Petit | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Helena MOUGAMMADALY | 2026-07-01T13:46:08.037Z |  |  |
 | [93](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/93) | Rédiger la politique de rétention | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Helena MOUGAMMADALY | 2026-07-01T13:46:02.327Z |  |  |
-| [95](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/95) | Conformité RGPD 2/2 | Issue | Done | Done | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Keziah PERFILLON | 2026-07-01T13:45:53.703Z |  |  |
 | [92](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/92) | Créer le modèle DataRequest | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Keziah PERFILLON | 2026-07-01T13:45:45.923Z |  |  |
 | [91](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/91) | Ajouter le bouton frontend | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Keziah PERFILLON | 2026-07-01T13:45:40.377Z |  |  |
 | [90](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/90) | Export CSV | Task | Done |  | Groupe30Apocalipssi\Sprint 5 Mercredi Après-midi (14h00 – 18h00) | Keziah PERFILLON | 2026-07-01T13:45:35.827Z |  |  |
@@ -308,6 +271,76 @@ _No work items._
 | [25](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/25) | Organiser les activités utilisateur | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Kevin TCHIKAYA | 2026-07-01T12:51:28.11Z | StoryMap |  |
 | [24](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/24) | Ajouter la branche Enseignant | Task | Done |  | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Kevin TCHIKAYA | 2026-07-01T12:51:15.567Z | StoryMap |  |
 | [5](https://dev.azure.com/ktchikaya/Groupe30Apocalipssi/_workitems/edit/5) | Story Map | Issue | Done | Done | Groupe30Apocalipssi\Cadrage Lundi Matin (9h00 – 12h30) | Kevin TCHIKAYA | 2026-07-01T12:51:06.537Z |  |  |
+
+<details>
+<summary>37 - Vérifier cohérence avec Product Backlog</summary>
+
+Comparer backlog et planning.
+
+</details>
+
+<details>
+<summary>36 - Justifier la Release 2</summary>
+
+Argumenter les reports.
+
+</details>
+
+<details>
+<summary>35 - Identifier les dépendances</summary>
+
+Lister les dépendances.
+
+</details>
+
+<details>
+<summary>34 - Définir la capacité de chaque Sprint</summary>
+
+Définir la vélocité.
+
+</details>
+
+<details>
+<summary>33 - Ajouter les stories Enseignant</summary>
+
+Intégrer les nouvelles fonctionnalités.
+
+</details>
+
+<details>
+<summary>32 - Répartir les User Stories par Sprint</summary>
+
+Construire le planning.
+
+</details>
+
+<details>
+<summary>31 - Identifier le MVP Release 1 F1-F6</summary>
+
+Lister les fonctionnalités MVP.
+
+</details>
+
+<details>
+<summary>103 - Backend — endpoints API</summary>
+
+CRUD classes + rejoindre une classe par code (ClassListCreateView, JoinClassView)  Édition des questions du gabarit (ClassQuizQuestionEditView)  Publication → clonage automatique vers chaque étudiant inscrit (ClassQuizPublishView)  Roster de classe + moyenne/quiz passés par étudiant (ClassRosterView)  Détail des scores d'un étudiant précis (StudentDetailInClassView)  Détection des étudiants en difficulté, seuil configurable (AtRiskStudentsView)  Statistiques de classe : moyenne + % de réussite par question (ClassQuizStatsView)
+
+</details>
+
+<details>
+<summary>105 - Bugs trouvés et corrigés en cours de route</summary>
+
+Accès étudiant manquant aux documents de classe : l'API le permettait mais aucune page frontend n'existait → ajout de StudentClassPage  Aperçu PDF invisible en <iframe> : le serveur renvoyait X-Frame-Options: DENY sur les fichiers media → exemption ciblée via xframe_options_exempt (apocal/urls.py)  Route /media/* absente du reverse proxy de prod → ajoutée au Caddyfile, aurait cassé les PDF une fois déployé  Boutons d'entrée en classe peu visibles → boutons explicites "Entrer dans la classe →" ajoutés (enseignant et étudiant)  Composant partagé PdfDocumentList (liste + aperçu togglable) pour éviter la duplication enseignant/étudiant
+
+</details>
+
+<details>
+<summary>104 - Frontend — pages</summary>
+
+Sélecteur de rôle à l'inscription + garde RequireTeacher  Client API api/classroom.ts  Espace enseignant : liste des classes, détail (onglets Étudiants/Supports/Quiz/Difficultés), relecture-édition-publication de quiz  Espace étudiant : rejoindre une classe (JoinClassPage), page dédiée à la classe rejointe (StudentClassPage) avec accès aux supports de cours et aux quiz publiés  Intégration des routes (App.tsx) et de la navigation (Layout.tsx)
+
+</details>
 
 <details>
 <summary>60 - Vérifier cohérence avec Story Map</summary>

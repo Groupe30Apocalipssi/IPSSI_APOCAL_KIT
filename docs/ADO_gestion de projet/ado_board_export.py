@@ -63,7 +63,7 @@ PROJECT_NAME = "Groupe30Apocalipssi"
 TEAM_NAME = "Groupe30Apocalipssi Team"
 BOARD_ID = "Issues"
 
-PERSONAL_ACCESS_TOKEN = os.environ.get("TON_TOKEN_ICI") #"ADO_PAT"
+PERSONAL_ACCESS_TOKEN = os.environ.get("ADO_PAT") #"ADO_PAT"
 
 OUTPUT_MARKDOWN_FILE = "board_export.md"
 OUTPUT_HTML_FILE = "board_report.html"
