@@ -34,6 +34,26 @@ import requests
 from requests import HTTPError
 
 
+def _load_dotenv(path: Path) -> None:
+    """Charge un fichier .env minimal (KEY=VALUE) dans os.environ, sans écraser
+    les variables déjà définies (ex. export shell) et sans dépendance externe."""
+    if not path.is_file():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key, value = key.strip(), value.strip().strip('"').strip("'")
+        os.environ.setdefault(key, value)
+
+
+# Cherche un .env à côté du script, puis à la racine du projet (celui utilisé
+# par le backend Django) — la valeur la plus proche du script gagne.
+_load_dotenv(Path(__file__).resolve().parent / ".env")
+_load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+
+
 # =========================
 # CONFIG
 # =========================
@@ -43,7 +63,7 @@ PROJECT_NAME = "Groupe30Apocalipssi"
 TEAM_NAME = "Groupe30Apocalipssi Team"
 BOARD_ID = "Issues"
 
-PERSONAL_ACCESS_TOKEN ="8IJ102V7qlsbokRS7g9xfxgnYsbQZWp3OzzEcRGayb2I25duqyyvJQQJ99CFACAAAAArXVRsAAASAZDO3KNx" #os.environ.get("ADO_PAT", "PUT_YOUR_PAT_HERE")
+PERSONAL_ACCESS_TOKEN = os.environ.get("TON_TOKEN_ICI") #"ADO_PAT"
 
 OUTPUT_MARKDOWN_FILE = "board_export.md"
 OUTPUT_HTML_FILE = "board_report.html"
